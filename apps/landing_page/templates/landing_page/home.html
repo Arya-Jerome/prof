@@ -1,547 +1,784 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
-{% block title %}Prof — Your Autonomous Career Agent{% endblock %}
+{% block title %}Prof - Your Autonomous Career Agent{% endblock %}
 
-{% block meta_description %}Upload your resume. Prof handles the rest. AI-powered job sourcing, ATS-crushing documents, and precision outreach to decision-makers — all on autopilot.{% endblock %}
+{% block meta_description %}Upload your resume. Prof handles the rest. AI-powered job sourcing, ATS-crushing documents, and precision outreach to decision-makers.{% endblock %}
 
 {% block content %}
 <div class="page-shell">
-    <header class="site-header">
-        <div class="container header-inner">
-            <a href="{% url 'landing_page:home' %}" class="brand" aria-label="Prof home">
-                <span class="brand-mark">P</span>
-                <div class="brand-text">
-                    <strong>Prof</strong>
-                    <span>Career Intelligence</span>
-                </div>
-            </a>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#hero" class="logo" aria-label="Prof home">
+        <span class="logo-text">Prof</span>
+      </a>
 
-            <nav class="main-nav" aria-label="Main navigation">
-                <a href="#how-it-works">How It Works</a>
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#audience">Who It's For</a>
-            </nav>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#solution" class="nav-link">How It Works</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#who" class="nav-link">Who It's For</a>
+      </nav>
 
-            <a href="#hero-cta" class="header-cta">Get Started Free</a>
+      <a href="#cta" class="header-cta">Get Started</a>
+    </div>
+  </header>
 
-            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+  <main>
+    <section class="section hero-section" id="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="line strike-line">
+            <span class="word">Stop</span>
+            <span class="word">Applying.</span>
+          </span>
+
+          <span class="line terminal-line">
+            <span class="word">Start</span>
+            <span class="word">Engineering</span>
+          </span>
+
+          <span class="line gradient-line">
+            <span class="word">Your</span>
+            <span class="next-move">
+              <span class="word">Next</span>
+              <span class="word">Move.</span>
+            </span>
+          </span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Prof analyzes your background, continuously hunts executive-grade roles, and delivers
+          bespoke application packages — tailored resume, cover letter, and a direct path to the
+          hiring manager — while you focus on your actual work.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-xl blue-glass hero-cta-primary">
+            <span>Get Your First Match Free</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
         </div>
+      </div>
 
-        <div class="mobile-nav" id="mobileNav">
-            <a href="#how-it-works">How It Works</a>
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#audience">Who It's For</a>
-            <a href="#hero-cta" class="mobile-nav-cta">Get Started Free</a>
+      <div class="hero-visual glass">
+          <div class="dashboard-header">
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span class="dashboard-label">Prof Matching Engine</span>
+          </div>
+
+          <div class="dashboard-body">
+            <div class="match-card">
+              <div class="match-top">
+                <div class="match-info">
+                  <h4>VP, Product Strategy</h4>
+                  <p>Series C Fintech • Hybrid • New York</p>
+                </div>
+                <div class="match-score">
+                  <span class="score-value">92%</span>
+                  <span class="score-label">Match</span>
+                </div>
+              </div>
+              <a href="#" class="check-position-btn">Check the Position</a>
+            </div>
+
+            <div class="outreach-preview">
+              <h4>Suggested Email Massage</h4>
+              <p>
+                I noticed your team is scaling platform strategy after the recent expansion. My experience leading regulated product rollouts may be highly relevant to what you're building.
+                I've spent the past 12 years driving product strategy at the intersection of financial services and technology — leading cross...
+              </p>
+            </div>
+          </div>
+      </div>
+
+      <a href="#problem" class="hero-scroll-indicator" aria-label="Read more">
+        <span class="hero-scroll-indicator__text">
+          Read more
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </span>
+      </a>
+
+    </section>
+
+    <section class="section problem-section" id="problem">
+      <div class="section-inner">
+        <h2 class="section-title">
+          Every Day You Apply Manually,<br />
+          Someone Else Gets the Interview.
+        </h2>
+
+        <p class="section-body">
+          Modern hiring is a volume war fought with algorithms. Companies use ATS filters to reject
+          over 75% of applications before a human ever sees them. The roles that actually fit your
+          caliber? They are never posted publicly, or they disappear within 48 hours. And writing a
+          genuinely tailored cover letter for every position - then researching the hiring manager,
+          crafting a cold outreach message, and following up - takes north of three hours per role.
+        </p>
+
+        <p class="section-body">
+          That is three hours you do not have. And that is three hours your competition is spending
+          with a tool like Prof.
+        </p>
+
+        <div class="stat-strip">
+          <div class="stat-card glass">
+            <span class="stat-number">75%</span>
+            <span class="stat-label">of resumes rejected by ATS before a human reads them</span>
+          </div>
+          <div class="stat-card glass">
+            <span class="stat-number">48hrs</span>
+            <span class="stat-label">average window before a competitive role is filled</span>
+          </div>
+          <div class="stat-card glass">
+            <span class="stat-number">3+ hours</span>
+            <span class="stat-label">wasted per manual application attempt</span>
+          </div>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <main>
-        <!-- HERO SECTION -->
-        <section class="section hero-section" id="hero">
-            <div class="container hero-grid">
-                <div class="hero-content">
-                    <div class="section-tag">The Autonomous Career Intelligence Platform</div>
+    <section class="section solution-section" id="solution">
+      <div class="section-inner">
+        <h2 class="section-title">
+          Your Private Executive Recruitment Firm.<br />
+          On Demand. Fully Automated.
+        </h2>
 
-                    <h1 class="hero-title">
-                        Stop Applying.
-                        <span>Start Engineering Your Next Move.</span>
-                    </h1>
+        <p class="section-body">
+          Prof acts as your personal, AI-native career partner. You provide one thing: your master
+          resume. Prof reads between the lines - extracting your name, location, years of
+          experience, seniority level, and core competencies - then checks every inference with you
+          before deploying a live sourcing agent on your behalf.
+        </p>
 
-                    <p class="hero-subtitle">
-                        Prof analyzes your background, continuously hunts executive-grade roles, and delivers bespoke application packages — tailored resume, cover letter, and a direct path to the hiring manager — while you focus on your actual work.
-                    </p>
+        <p class="section-body">
+          From that moment forward, Prof handles the entire pipeline: discovering roles you would
+          never find manually, scoring each one against your unique profile, generating flawless
+          application documents, and charting a direct networking path to the decision-maker inside
+          every target company.
+        </p>
+        <h3 class="section-subtitle">
+          One upload. One confirmation. Then Prof takes over.
+        </h3>
 
-                    <div class="trust-bar">
-                        <div class="trust-item">Zero setup forms — just upload your resume</div>
-                        <div class="trust-item">First matched role delivered free, no credit card required</div>
-                        <div class="trust-item">Documents typeset in LaTeX, not templates</div>
-                    </div>
+        <div class="steps-grid">
+          <div class="step-card glass">
+            <span class="step-number">01</span>
+            <h3 class="step-title">Upload Your Blueprint</h3>
+            <p class="step-body">
+              Drop your existing resume into Prof. That is the only thing we ask you to do
+              manually. Our intelligence layer reads your document and automatically extracts
+              everything we need: your name, professional title, location, skills, years of
+              experience, education, and industry positioning.
+            </p>
+          </div>
 
-                    <div class="hero-actions">
-                        <a href="#hero-cta" id="hero-cta" class="btn btn-primary">Upload Your Resume — Get Your First Match Free</a>
-                        <a href="#how-it-works" class="btn btn-ghost">See how it works in 90 seconds ↓</a>
-                    </div>
-                </div>
+          <div class="step-card glass">
+            <span class="step-number">02</span>
+            <h3 class="step-title">Confirm Your Profile</h3>
+            <p class="step-body">
+              Before anything is deployed, Prof surfaces a clean summary of what it learned about
+              you and asks you to confirm or correct. Add strategic overrides - tell us to emphasize
+              your system architecture work or de-emphasize your early-career roles. Then approve,
+              and your agent goes live.
+            </p>
+          </div>
 
-                <div class="hero-visual">
-                    <div class="dashboard-card">
-                        <div class="dashboard-header">
-                            <div class="window-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <span class="dashboard-label">Prof Matching Engine</span>
-                        </div>
-
-                        <div class="dashboard-body">
-                            <div class="dashboard-panel">
-                                <h3>Candidate Profile</h3>
-                                <ul>
-                                    <li><span>Name</span><strong>Alex Morgan</strong></li>
-                                    <li><span>Role Target</span><strong>Director / VP</strong></li>
-                                    <li><span>Experience</span><strong>11+ years</strong></li>
-                                    <li><span>Industry Fit</span><strong>Fintech / SaaS</strong></li>
-                                </ul>
-                            </div>
-
-                            <div class="match-card">
-                                <div class="match-score">92% Match</div>
-                                <h4>VP, Product Strategy</h4>
-                                <p>Series C Fintech • Hybrid • New York</p>
-                                <div class="match-tags">
-                                    <span>ATS Resume</span>
-                                    <span>Cover Letter</span>
-                                    <span>Hiring Manager Path</span>
-                                </div>
-                            </div>
-
-                            <div class="outreach-preview">
-                                <h4>Outreach Preview</h4>
-                                <p>
-                                    Hi Sarah — noticed your team is scaling platform strategy after the recent expansion. My experience leading regulated product rollouts may be highly relevant...
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROBLEM SECTION -->
-        <section class="section" id="problem">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">Why the Traditional Job Search Fails Executives</span>
-                    <h2>Every Day You Apply Manually, Someone Else Gets the Interview.</h2>
-                </div>
-
-                <div class="content-narrow">
-                    <p>
-                        Modern hiring is a volume war fought with algorithms. Companies use ATS filters to reject over 75% of applications before a human ever sees them. The roles that actually fit your caliber? They are never posted publicly, or they disappear within 48 hours. And writing a genuinely tailored cover letter for every position — then researching the hiring manager, crafting a cold outreach message, and following up — takes north of three hours per role.
-                    </p>
-                    <p>
-                        That is three hours you do not have. And that is three hours your competition is spending with a tool like Prof.
-                    </p>
-                </div>
-
-                <div class="stats-grid">
-                    <article class="stat-card">
-                        <strong>75%</strong>
-                        <span>of resumes rejected by ATS before a human reads them</span>
-                    </article>
-                    <article class="stat-card">
-                        <strong>48hrs</strong>
-                        <span>average window before a competitive role is filled</span>
-                    </article>
-                    <article class="stat-card">
-                        <strong>3+ hours</strong>
-                        <span>wasted per manual application attempt</span>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- SOLUTION SECTION -->
-        <section class="section" id="solution">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">Introducing Prof</span>
-                    <h2>Your Private Executive Recruitment Firm. On Demand. Fully Automated.</h2>
-                </div>
-
-                <div class="content-narrow">
-                    <p>
-                        Prof acts as your personal, AI-native career partner. You provide one thing: your master resume. Prof reads between the lines — extracting your name, location, years of experience, seniority level, and core competencies — then checks every inference with you before deploying a live sourcing agent on your behalf.
-                    </p>
-                    <p>
-                        From that moment forward, Prof handles the entire pipeline: discovering roles you would never find manually, scoring each one against your unique profile, generating flawless application documents, and charting a direct networking path to the decision-maker inside every target company.
-                    </p>
-                </div>
-
-                <div class="callout-box">
-                    <p>One upload. One confirmation. Then Prof takes over.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- HOW IT WORKS SECTION -->
-        <section class="section" id="how-it-works">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">Simple to Start. Autonomous from There.</span>
-                    <h2>Three Steps Between You and Your Next Offer.</h2>
-                </div>
-
-                <div class="steps-grid">
-                    <article class="step-card">
-                        <div class="step-number">01</div>
-                        <h3>Upload Your Blueprint</h3>
-                        <p>
-                            Drop your existing resume into Prof. That is the only thing we ask you to do manually. Our intelligence layer reads your document and automatically extracts everything we need: your name, professional title, location, skills, years of experience, education, and industry positioning.
-                        </p>
-                    </article>
-
-                    <article class="step-card">
-                        <div class="step-number">02</div>
-                        <h3>Confirm Your Profile</h3>
-                        <p>
-                            Before anything is deployed, Prof surfaces a clean summary of what it learned about you and asks you to confirm or correct. Add strategic overrides — tell us to <em>emphasize your system architecture work</em> or <em>de-emphasize your early-career roles</em>. Then approve, and your agent goes live.
-                        </p>
-                    </article>
-
-                    <article class="step-card">
-                        <div class="step-number">03</div>
-                        <h3>Receive Your First Match Free</h3>
-                        <p>
-                            Prof delivers your first high-fit job opportunity with a full application package: a tailored ATS-optimized resume, a persuasive cover letter, and a ready-to-send outreach message to the exact hiring manager. Review it. If it is exactly what executive-grade looks like, you purchase that package. Everything after that runs on your terms.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURES SECTION -->
-        <section class="section" id="features">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">The Prof Capability Stack</span>
-                    <h2>Four Systems. One Outcome: The Interview.</h2>
-                </div>
-
-                <div class="features-grid">
-                    <article class="feature-card">
-                        <h3>Only Roles That Actually Fit You.</h3>
-                        <p>
-                            Prof's background agents continuously scan enterprise job boards and source directly from LinkedIn, parsing job descriptions in real-time. Every role is scored algorithmically against your career profile. Your dashboard only shows signal — never noise.
-                        </p>
-                        <span class="outcome-tag">No more irrelevant applications</span>
-                    </article>
-
-                    <article class="feature-card">
-                        <h3>Application Documents That Look Like a Hired Designer Made Them.</h3>
-                        <p>
-                            Forget generic templates and exported Word documents. Prof's document engine rewrites your resume and cover letter with precision keyword anchoring calibrated to pass ATS systems for that specific role. The final output is compiled by a professional LaTeX typesetter, producing crisp, perfectly spaced PDF documents that look like they came from a top-tier executive search firm.
-                        </p>
-                        <span class="outcome-tag">Documents that pass machines and impress humans</span>
-                    </article>
-
-                    <article class="feature-card">
-                        <h3>Skip the Application Portal. Go Straight to the Hiring Manager.</h3>
-                        <p>
-                            Prof analyzes the target company's org structure, identifies the department you would join, and constructs advanced Boolean search queries to locate the exact hiring manager and relevant team leads on LinkedIn. It validates their current employment and flags mutual connection points — shared universities, past employers, or geographic overlap — that dramatically increase response rates.
-                        </p>
-                        <span class="outcome-tag">Turn cold applications into warm conversations</span>
-                    </article>
-
-                    <article class="feature-card">
-                        <h3>Messages That Get Replied To.</h3>
-                        <p>
-                            Every outreach message Prof writes is engineered, not templated. It opens with a specific mutual anchor point, frames your value in one sentence, and ends with the lowest-friction possible ask: a 10-minute call. No pitch decks. No resumes attached. Just a human-sounding message from someone who clearly did their homework.
-                        </p>
-                        <span class="outcome-tag">Ultra-personalized, zero-fluff cold outreach</span>
-                    </article>
-
-                    <article class="feature-card feature-card-wide">
-                        <h3>You Stay in Command. Prof Handles the Execution.</h3>
-                        <p>
-                            Every automated system has a manual override — and Prof's is called <strong>Strategic Overrides</strong>. At any point, you can instruct Prof to shift its emphasis: <em>"Lead with my fintech regulatory experience," "Do not reference my freelance period," "Target Series B startups only."</em> Granular, plain-language instructions that reshape every output instantly.
-                        </p>
-                        <span class="outcome-tag">Your judgment, Prof's execution</span>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- PRICING SECTION -->
-        <section class="section" id="pricing">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">Pricing That Bets on Itself</span>
-                    <h2>We Do All the Work First. You Pay Only When You See the Result.</h2>
-                </div>
-
-                <div class="content-narrow">
-                    <p>
-                        Most tools charge you upfront and hope for the best. Prof works the other way around.
-                    </p>
-                    <p>
-                        We invest in you first. Prof reads your resume, extracts your full professional profile, confirms the details with you, sources real roles, scores each against your profile, and builds your complete application package — tailored resume, cover letter, and hiring manager outreach script. All of it, before you spend a single dollar.
-                    </p>
-                    <p>
-                        The moment your first match is ready and sitting in your dashboard, you will see the overview of what you are getting. Only then do you decide whether to unlock it.
-                    </p>
-                    <p class="pricing-emphasis">
-                        <strong>You are not paying for a promise. You are paying for a finished product.</strong>
-                    </p>
-                </div>
-
-                <div class="table-card">
-                    <h3>The Prof Pricing Flow</h3>
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Step</th>
-                                    <th>What Happens</th>
-                                    <th>Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>1. Upload Resume</strong></td>
-                                    <td>Prof extracts your name, location, title, skills, experience, and career profile automatically</td>
-                                    <td><strong>Free</strong></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>2. Profile Confirmation</strong></td>
-                                    <td>Prof surfaces everything it learned and asks you to confirm or correct — no forms to fill</td>
-                                    <td><strong>Free</strong></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>3. Agent Deployment</strong></td>
-                                    <td>Prof sources live roles, scores each against your profile, and builds your first full application package</td>
-                                    <td><strong>Free</strong></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>4. Unlock Your Package</strong></td>
-                                    <td>Satisfied with what you see? Purchase to reveal the full resume PDF, cover letter, and outreach script</td>
-                                    <td><strong>Paid</strong></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>5. Continue the Campaign</strong></td>
-                                    <td>Load your wallet and deploy Prof for as many additional roles as you want, at a per-job rate</td>
-                                    <td><strong>Per-job</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="pricing-grid">
-                    <article class="price-card featured">
-                        <h3>First Match Unlock</h3>
-                        <p>Full application package for your first sourced role — tailored resume PDF, cover letter, hiring manager outreach script</p>
-                        <div class="price">$9</div>
-                    </article>
-
-                    <article class="price-card">
-                        <h3>5-Role Pack</h3>
-                        <p>5 matched roles, all documents, all outreach scripts</p>
-                        <div class="price">$39</div>
-                    </article>
-
-                    <article class="price-card">
-                        <h3>15-Role Campaign</h3>
-                        <p>15 matched roles, faster sourcing cadence, priority queue</p>
-                        <div class="price">$99</div>
-                    </article>
-
-                    <article class="price-card">
-                        <h3>30-Role Executive Sprint</h3>
-                        <p>30 matched roles, highest cadence, dedicated sourcing depth</p>
-                        <div class="price">$179</div>
-                    </article>
-                </div>
-
-                <p class="pricing-note">
-                    The more roles you unlock, the lower your per-application cost — down to under $6 per complete, executive-grade application package.
-                </p>
-
-                <div class="pricing-callout">
-                    <strong>Prof is the only career tool where you see the finished product before you pay for it.</strong>
-                </div>
-
-                <div class="pricing-cta-block">
-                    <a href="#hero-cta" class="btn btn-primary">Start Free — Upload Resume</a>
-                    <ul class="micro-list">
-                        <li>No subscription. No monthly charge. You pay per result, not per promise.</li>
-                        <li>Your resume data is processed in-memory and never stored or sold.</li>
-                        <li>You will always see a match preview before spending anything.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- AUDIENCE SECTION -->
-        <section class="section" id="audience">
-            <div class="container">
-                <div class="section-head">
-                    <span class="section-tag">Who Prof Is Built For</span>
-                    <h2>Built for Professionals Who Are Too Valuable to Job-Search Manually.</h2>
-                </div>
-
-                <div class="persona-grid">
-                    <article class="persona-card">
-                        <h3>The Senior Technologist</h3>
-                        <blockquote>
-                            "I know my market value. I just do not have six hours a week to prove it to ATS systems."
-                        </blockquote>
-                        <p>
-                            Engineering leads, principal engineers, and CTOs targeting $180K+ roles at Series C companies or enterprise firms.
-                        </p>
-                    </article>
-
-                    <article class="persona-card">
-                        <h3>The MBA Candidate in Transition</h3>
-                        <blockquote>
-                            "I am transitioning industries and need every application to tell a precise, compelling story."
-                        </blockquote>
-                        <p>
-                            MBA graduates and career-switchers entering finance, consulting, or tech leadership for the first time.
-                        </p>
-                    </article>
-
-                    <article class="persona-card">
-                        <h3>The Mid-Level Executive</h3>
-                        <blockquote>
-                            "I am at a Director level but want VP-track roles. The gap is positioning, not experience."
-                        </blockquote>
-                        <p>
-                            Directors and VPs navigating upward transitions where framing and network access are the deciding factors.
-                        </p>
-                    </article>
-                </div>
-
-                <div class="callout-box">
-                    <p>If your next career move matters — and your time does too — Prof was built for you.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- TRUST SIGNALS SECTION -->
-        <section class="section" id="trust">
-            <div class="container">
-                <div class="trust-signals-grid">
-                    <article class="trust-signal">🔒 <strong>Your resume is never stored beyond your session</strong> — processed in-memory, never sold or indexed</article>
-                    <article class="trust-signal">📄 <strong>LaTeX-compiled PDFs</strong> — same typesetting standard used by academic journals and executive search firms</article>
-                    <article class="trust-signal">🎯 <strong>85%+ match threshold</strong> — we would rather send you nothing than send you something irrelevant</article>
-                    <article class="trust-signal">✉️ <strong>All outreach copy is ready to paste</strong> — no editing required, delivered in your dashboard instantly</article>
-                    <article class="trust-signal">🔄 <strong>Profile updates in real-time</strong> — change your constraints at any point, all future outputs update accordingly</article>
-                </div>
-            </div>
-        </section>
-
-        <!-- FINAL CTA SECTION -->
-        <section class="section final-cta-section" id="final-cta">
-            <div class="container final-cta-inner">
-                <h2>Your Next Role Is Already Posted Somewhere. The Question Is Whether Prof Finds It First.</h2>
-                <p>
-                    Join the growing number of senior professionals using autonomous career intelligence to secure interviews faster, more precisely, and with significantly less effort than the manual approach.
-                </p>
-
-                <a href="#" class="btn btn-primary btn-large upload-trigger">Upload My Resume — It's Free to Start</a>
-
-                <p class="micro-copy">
-                    No credit card. No subscription. Your first match, built to executive standards, delivered to your dashboard.
-                </p>
-
-                <p class="secondary-line">
-                    <em>Already have a specific company in mind?</em> Tell Prof during setup and it will prioritize sourcing roles there first.
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer section" id="footer">
-        <div class="container footer-grid">
-            <div class="footer-brand">
-                <div class="brand">
-                    <span class="brand-mark">P</span>
-                    <div class="brand-text">
-                        <strong>Prof</strong>
-                        <span>Career Intelligence</span>
-                    </div>
-                </div>
-                <p>Career Intelligence. Delivered Autonomously.</p>
-            </div>
-
-            <div class="footer-links">
-                <a href="#how-it-works">How It Works</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Contact / Support</a>
-                <a href="#">Terms of Service</a>
-            </div>
-
-            <div class="footer-trust">
-                <p>Prof is not a job board. It is not a resume builder. It is an autonomous agent that works while you don't.</p>
-            </div>
+          <div class="step-card glass">
+            <span class="step-number">03</span>
+            <h3 class="step-title">Receive Your First Match Free</h3>
+            <p class="step-body">
+              Prof delivers your first high-fit job opportunity with a full application package: a
+              tailored ATS-optimized resume, a persuasive cover letter, and a ready-to-send
+              outreach message to the exact hiring manager. Review it. If it is exactly what
+              executive-grade looks like, you purchase that package. Everything after that runs on
+              your terms.
+            </p>
+          </div>
         </div>
-    </footer>
+      </div>
+
+    </section>
+
+    <section class="section features-section" id="features">
+      <div class="section-inner">
+        <h2 class="section-title">
+          Four Systems. One Outcome:<br />
+          The Interview.
+        </h2>
+
+        <div class="features-grid">
+          <article class="feature-card glass">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </div>
+            <h3 class="feature-title">Only Roles That Actually Fit You.</h3>
+            <p class="feature-body">
+              Prof's background agents continuously scan enterprise job boards and source directly
+              from LinkedIn, parsing job descriptions in real-time. Every role is scored
+              algorithmically against your career profile. Your dashboard only shows signal - never
+              noise.
+            </p>
+            <span class="feature-tag">No more irrelevant applications</span>
+          </article>
+
+          <article class="feature-card glass">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+            </div>
+            <h3 class="feature-title">Documents That Look Like a Hired Designer Made Them.</h3>
+            <p class="feature-body">
+              Forget generic templates and exported Word documents. Prof's document engine rewrites
+              your resume and cover letter with precision keyword anchoring calibrated to pass ATS
+              systems for that specific role. The final output is compiled by a professional LaTeX
+              typesetter, producing crisp, perfectly spaced PDF documents.
+            </p>
+            <span class="feature-tag">Documents that pass machines and impress humans</span>
+          </article>
+
+          <article class="feature-card glass">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="feature-title">Skip the Application Portal. Go Straight to the Hiring Manager.</h3>
+            <p class="feature-body">
+              Prof analyzes the target company's org structure, identifies the department you would
+              join, and constructs advanced Boolean search queries to locate the exact hiring
+              manager and relevant team leads on LinkedIn. It validates their current employment
+              and flags mutual connection points.
+            </p>
+            <span class="feature-tag">Turn cold applications into warm conversations</span>
+          </article>
+
+          <article class="feature-card glass">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-title">Messages That Get Replied To.</h3>
+            <p class="feature-body">
+              Every outreach message Prof writes is engineered, not templated. It opens with a
+              specific mutual anchor point, frames your value in one sentence, and ends with the
+              lowest-friction possible ask: a 10-minute call. No pitch decks. No resumes attached.
+            </p>
+            <span class="feature-tag">Ultra-personalized, zero-fluff cold outreach</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section pricing-section" id="pricing">
+      <div class="section-inner">
+        <h2 class="section-title">
+          We Do All the Work First.<br />
+          You Pay Only When You See the Result.
+        </h2>
+
+        <p class="section-body">
+          Most tools charge you upfront and hope for the best. Prof works the other way around.
+        </p>
+        <p class="section-body">
+          We invest in you first. Prof reads your resume, extracts your full professional profile,
+          confirms the details with you, sources real roles, scores them for compatibility, and
+          builds your complete application package - tailored resume, cover letter, and hiring
+          manager outreach script. All of it, before you spend a single dollar.
+        </p>
+
+        <h3 class="section-subtitle">Pricing Tiers</h3>
+        <div class="pricing-tiers">
+          <div class="tier-card glass">
+            <div class="tier-header">First Match Unlock</div>
+            <div class="tier-price">
+              <span class="tier-amount">$9</span>
+            </div>
+            <div class="tier-footer">
+              <span class="tier-per">Price per role</span>
+            </div>
+          </div>
+
+          <div class="tier-card glass">
+            <div class="tier-header">5-Role Pack</div>
+            <div class="tier-price">
+              <span class="tier-amount">$39</span>
+            </div>
+            <div class="tier-footer">
+              <span class="tier-per">$7.80/role</span>
+            </div>
+          </div>
+
+          <div class="tier-card blue-glass tier-popular">
+            <span class="tier-badge">Most Popular</span>
+            <div class="tier-header">15-Role Campaign</div>
+            <div class="tier-price">
+              <span class="tier-amount">$99</span>
+            </div>
+            <div class="tier-footer">
+              <span class="tier-per">~$6.60/role</span>
+            </div>
+          </div>
+
+          <div class="tier-card glass">
+            <div class="tier-header">30-Role Executive Sprint</div>
+            <div class="tier-price">
+              <span class="tier-amount">$179</span>
+            </div>
+            <div class="tier-footer">
+              <span class="tier-per">~$5.97/role</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section audience-section" id="who">
+      <div class="section-inner">
+        <h2 class="section-title">
+          Built for Professionals Who Are<br />
+          Too Valuable to Job-Search Manually.
+        </h2>
+
+        <div class="persona-grid">
+          <div class="persona-card glass">
+            <span class="persona-label">The Senior Technologist</span>
+            <p class="persona-quote">
+              I know my market value. I just do not have six hours a week to prove it to ATS
+              systems.
+            </p>
+            <p class="persona-desc">
+              Engineering leads, principal engineers, and CTOs targeting $180K+ roles at Series C
+              companies or enterprise firms.
+            </p>
+          </div>
+
+          <div class="persona-card glass">
+            <span class="persona-label">The MBA Candidate in Transition</span>
+            <p class="persona-quote">
+              I am transitioning industries and need every application to tell a precise, compelling
+              story.
+            </p>
+            <p class="persona-desc">
+              MBA graduates and career-switchers entering finance, consulting, or tech leadership
+              for the first time.
+            </p>
+          </div>
+
+          <div class="persona-card glass">
+            <span class="persona-label">The Mid-Level Executive</span>
+            <p class="persona-quote">
+              I am at a Director level but want VP-track roles. The gap is positioning, not
+              experience.
+            </p>
+            <p class="persona-desc">
+              Directors and VPs navigating upward transitions where framing and network access are
+              the deciding factors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section trust-section " id="trust">
+      <div class="section-inner">
+        <div class="trust-grid glass">
+
+          <div class="trust-item">
+            <span class="trust-icon">&#128274;</span>
+            <p>Processed in-memory. Never stored. Never sold.</p>
+          </div>
+
+          <div class="trust-item">
+            <span class="trust-icon">&#128196;</span>
+            <p>LaTeX-compiled PDFs built to academic journal standards.</p>
+          </div>
+
+          <div class="trust-item">
+            <span class="trust-icon">&#127919;</span>
+            <p>Only roles that truly fit your profile ever reach you.</p>
+          </div>
+
+          <div class="trust-item">
+            <span class="trust-icon">&#9993;&#65039;</span>
+            <p>Every outreach message arrives paste-ready, zero editing needed.</p>
+          </div>
+
+          <div class="trust-item">
+            <span class="trust-icon">&#128260;</span>
+            <p>Your preferences update live — change anything, anytime.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <section class="section cta-section" id="cta">
+      <h2 class="cta-title">
+        Your Next Role Is Already Posted Somewhere.<br />
+        The Question Is<br />
+        <span>Whether Prof Finds It First.</span>
+      </h2>
+
+      <a class="btn btn-primary btn-xl">
+        <span>Upload Your Resume - It's Free to Start</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path
+            d="M4 10h12m0 0l-4-4m4 4l-4 4"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+  </section>
+
+
+  </main>
+
+  <footer class="site-footer glass-dark">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#hero" class="logo" aria-label="Prof home">
+          <img src="{% static 'img/prof.svg' %}" alt="Prof logo" class="logo-mark" />
+          <span class="logo-text">Prof</span>
+        </a>
+        <p class="footer-tagline">Career Intelligence. Delivered Autonomously.</p>
+      </div>
+      <p class="footer-trust">
+        Prof is not a job board. It is not a resume builder. It is an autonomous agent that works
+        while you don't.
+      </p>
+      <p class="footer-copy">&copy; 2026 Prof. All rights reserved.</p>
+    </div>
+  </footer>
 </div>
 
-<button class="scroll-top" aria-label="Scroll to top">↑</button>
-{% endblock %}
-
-{% block extra_js %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    initMobileNav();
-    initScrollTop();
-    initSmoothActionButtons();
-});
+'use strict';
 
-function initMobileNav() {
-    const toggleButton = document.querySelector('.nav-toggle');
-    const mobileNav = document.querySelector('.mobile-nav');
+const debounce = (func, wait = 100) => {
+  let timeout;
 
-    if (!toggleButton || !mobileNav) return;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
 
-    toggleButton.addEventListener('click', () => {
-        const isActive = mobileNav.classList.toggle('active');
-        toggleButton.setAttribute('aria-expanded', String(isActive));
-    });
+const throttle = (func, limit = 100) => {
+  let inThrottle = false;
 
-    mobileNav.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
-            toggleButton.setAttribute('aria-expanded', 'false');
+  return (...args) => {
+    if (!inThrottle) {
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
+    }
+  };
+};
+
+const SmoothScroll = {
+  init() {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        const href = anchor.getAttribute('href');
+
+        if (!href || href === '#' || href.length < 2) return;
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        event.preventDefault();
+
+        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
         });
+
+        history.pushState(null, '', href);
+      });
     });
-}
+  }
+};
 
-function initScrollTop() {
-    const scrollTopButton = document.querySelector('.scroll-top');
+const ScrollReveal = {
+  init() {
+    const selectors = [
+      '.section-tag',
+      '.section-title',
+      '.section-body',
+      '.stat-card',
+      '.step-card',
+      '.feature-card',
+      '.flow-step',
+      '.tier-card',
+      '.persona-card',
+      '.trust-item',
+      '.callout',
+      '.pricing-callout',
+      '.cta-title',
+      '.cta-sub'
+    ];
 
-    if (!scrollTopButton) return;
+    selectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((element, index) => {
+        element.classList.add('reveal');
+        element.style.transitionDelay = `${(index % 4) * 100}ms`;
+      });
+    });
 
-    const handleScroll = () => {
-        if (window.scrollY > 500) {
-            scrollTopButton.classList.add('visible');
-        } else {
-            scrollTopButton.classList.remove('visible');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -80px 0px',
+        threshold: 0.1
+      }
+    );
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      observer.observe(element);
+    });
+  }
+};
+
+const Header = {
+  init() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    let ticking = false;
+
+    const update = () => {
+      const scrollY = window.pageYOffset;
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      let currentSection = '';
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 150;
+
+        if (scrollY >= sectionTop && scrollY < sectionTop + section.offsetHeight) {
+          currentSection = section.getAttribute('id');
         }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove('active');
+
+        if (link.getAttribute('href') === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+
+      ticking = false;
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    window.addEventListener(
+      'scroll',
+      throttle(() => {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, 16),
+      { passive: true }
+    );
 
-    scrollTopButton.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    update();
+  }
+};
+
+const HeroScrollIndicator = {
+  init() {
+    const update = () => {
+      if (window.scrollY > 20) {
+        document.body.classList.add('hero-scrolled');
+      } else {
+        document.body.classList.remove('hero-scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+};
+
+
+const CounterAnimation = {
+  init() {
+    const animate = (element, start, end, duration, suffix) => {
+      const range = end - start;
+      const increment = range / (duration / 16);
+      let current = start;
+
+      const update = () => {
+        current += increment;
+
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+          element.textContent = `${end}${suffix}`;
+          return;
+        }
+
+        element.textContent = `${Math.floor(current)}${suffix}`;
+        requestAnimationFrame(update);
+      };
+
+      update();
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !entry.target.dataset.animated) {
+            entry.target.dataset.animated = 'true';
+
+            const text = entry.target.textContent;
+
+            if (text.includes('%')) {
+              animate(entry.target, 0, parseInt(text, 10), 1500, '%');
+            } else if (text.includes('hrs')) {
+              animate(entry.target, 0, parseInt(text, 10), 1500, 'hrs');
+            } else if (text.includes('+')) {
+              const match = text.match(/\d+/);
+
+              if (match) {
+                animate(entry.target, 0, parseInt(match[0], 10), 1500, '+ hours');
+              }
+            }
+          }
         });
+      },
+      { threshold: 0.5 }
+    );
+
+    document.querySelectorAll('.stat-number').forEach((element) => {
+      observer.observe(element);
     });
-}
+  }
+};
 
-function initSmoothActionButtons() {
-    const uploadButtons = document.querySelectorAll('.upload-trigger');
+const PricingModule = {
+  init() {
+    const tierCards = document.querySelectorAll('.tier-card');
 
-    uploadButtons.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            // TODO: Connect to your resume upload endpoint
-            console.log('Upload trigger clicked - connect to upload flow');
+    tierCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        tierCards.forEach((otherCard) => {
+          otherCard.classList.remove('selected');
         });
+
+        card.classList.add('selected');
+        card.style.transform = 'translateY(-4px) scale(1.02)';
+
+        setTimeout(() => {
+          card.style.transform = 'translateY(-4px)';
+        }, 200);
+      });
     });
+  }
+};
+
+const CTAInteractions = {
+  init() {
+    const style = document.createElement('style');
+    style.textContent = '@keyframes ripple { to { transform: scale(4); opacity: 0; } }';
+    document.head.appendChild(style);
+
+    document.querySelectorAll('.btn-primary').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${event.clientX - rect.left - size / 2}px;
+          top: ${event.clientY - rect.top - size / 2}px;
+          background: rgba(255,255,255,0.3);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s linear;
+          pointer-events: none;
+        `;
+
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.appendChild(ripple);
+
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+  }
+};
+
+
+
+const App = {
+  modules: [
+    SmoothScroll,
+    ScrollReveal,
+    Header,
+    CounterAnimation,
+    PricingModule,
+    CTAInteractions,
+    HeroScrollIndicator,
+  ],
+
+  init() {
+    console.log(
+      '%cProf Landing Page Loaded',
+      'background:#0088ff;color:white;font-weight:bold;padding:8px 16px;font-size:14px;'
+    );
+
+    this.modules.forEach((module) => {
+      try {
+        module.init();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    document.body.classList.add('loaded');
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => App.init());
+} else {
+  App.init();
 }
 </script>
 {% endblock %}

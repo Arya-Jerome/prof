@@ -9,6 +9,7 @@
     
     <!-- CSS Styles -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
     {% if landing_page %}
     <link rel="stylesheet" href="{% static 'css/landing-page.css' %}">
@@ -31,8 +32,10 @@
         {% block content %}{% endblock %}
     </main>
     
+    {% if not landing_page %}
     <!-- Footer -->
     {% include 'core/partials/_footer.html' %}
+    {% endif %}
     
     <!-- JavaScript -->
     <script src="{% static 'js/base.js' %}"></script>
