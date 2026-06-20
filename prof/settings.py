@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-gpp+*xz#+mchl9qkrx1*17ko133toe$2d0njwdzumu337cm7%b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dietpi.taild764a0.ts.net', '100.97.116.21', 'localhost', '127.0.0.1']
 
 
 # Application definition
