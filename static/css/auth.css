@@ -8,22 +8,22 @@
 }
 
 .auth-box {
-    background-color: var(--bg-white);
-    border-radius: var(--radius-lg);
+    background-color: var(--color-gray1);
+    border-radius: var(--border-radius-item-lg);
     padding: var(--spacing-xl);
     width: 100%;
     max-width: 400px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--elevation-3);
 }
 
 .auth-box h1 {
-    color: var(--text-color);
+    color: var(--color-gray11);
     margin-bottom: var(--spacing-sm);
     text-align: center;
 }
 
 .auth-subtitle {
-    color: var(--text-light);
+    color: var(--color-gray6);
     text-align: center;
     margin-bottom: var(--spacing-lg);
 }
@@ -42,37 +42,64 @@
 
 .form-group label {
     font-weight: 500;
-    color: var(--text-color);
+    color: var(--color-gray11);
 }
 
 .form-group input {
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    border: var(--border-width-thin) solid var(--color-gray3);
+    border-radius: var(--border-radius-item-md);
     font-size: 1rem;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--color-blue);
 }
 
 .error {
-    color: #ef4444;
+    color: var(--color-red);
     font-size: 0.875rem;
 }
 
 .auth-footer {
     text-align: center;
     margin-top: var(--spacing-md);
-    color: var(--text-light);
+    color: var(--color-gray6);
 }
 
 .auth-footer a {
-    color: var(--primary-color);
+    color: var(--color-blue);
     text-decoration: none;
 }
 
 .auth-footer a:hover {
     text-decoration: underline;
+}
+
+.auth-stay-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    justify-content: center;
+    font-size: 14px;
+    color: var(--color-gray7);
+    cursor: pointer;
+    user-select: none;
+}
+
+.auth-stay-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.auth-message {
+    background: color-mix(in srgb, var(--color-red) 15%, transparent);
+    border-radius: var(--border-radius-item-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 14px;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-red);
 }

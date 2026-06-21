@@ -1,56 +1,130 @@
-/* Dashboard Styles */
-.dashboard-container {
+/* ============================================
+   DASHBOARD LAYOUT
+   ============================================ */
+.dashboard-layout {
     display: flex;
-    min-height: calc(100vh - 200px);
-    max-width: 1200px;
+    min-height: calc(100vh - 120px);
+    max-width: 1280px;
     margin: 0 auto;
     padding: var(--spacing-lg);
     gap: var(--spacing-lg);
+    align-items: flex-start;
 }
 
-.dashboard-sidebar {
-    width: 250px;
+/* ============================================
+   DASHBOARD ISLAND (sticky left sidebar)
+   Glass-styled, fixed-position island
+   ============================================ */
+.dashboard-island {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius-container-xs);
+    overflow: hidden;
+}
+
+.dashboard-island__brand {
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    border-bottom: var(--border-width-hairline) solid
+        color-mix(in srgb, var(--color-gray12) 8%, transparent);
+}
+
+.dashboard-island__logo-text {
+    font-family: var(--font-family-variable);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--color-gray11);
+}
+
+.dashboard-island__user {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 13px;
+    color: var(--color-gray6);
+    border-bottom: var(--border-width-hairline) solid
+        color-mix(in srgb, var(--color-gray12) 8%, transparent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard-island__nav {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.dashboard-island__nav a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-item-md);
+    text-decoration: none;
+    color: var(--color-gray8);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+}
+
+.dashboard-island__nav a svg {
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
 }
 
-.dashboard-nav {
-    background-color: var(--bg-white);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
-    box-shadow: var(--shadow-sm);
+.dashboard-island__nav a:hover {
+    background: color-mix(in srgb, var(--color-gray12) 6%, transparent);
+    color: var(--color-gray11);
 }
 
-.dashboard-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.dashboard-island__nav a.active {
+    background: color-mix(in srgb, var(--color-blue) 10%, transparent);
+    color: var(--color-blue);
+    box-shadow: inset 0 0 0 var(--border-width-thin)
+        color-mix(in srgb, var(--color-blue) 20%, transparent);
 }
 
-.dashboard-nav li {
-    margin-bottom: var(--spacing-sm);
+.dashboard-island__signout {
+    padding: var(--spacing-sm);
+    border-top: var(--border-width-hairline) solid
+        color-mix(in srgb, var(--color-gray12) 8%, transparent);
 }
 
-.dashboard-nav li a {
-    display: block;
+.dashboard-island__signout a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-item-md);
     text-decoration: none;
-    color: var(--text-color);
-    border-radius: var(--radius-md);
-    transition: all 0.2s;
+    color: var(--color-red);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
 }
 
-.dashboard-nav li a:hover {
-    background-color: var(--primary-color);
-    color: var(--bg-white);
+.dashboard-island__signout a svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
-.dashboard-nav li a.active {
-    background-color: var(--primary-color);
-    color: var(--bg-white);
+.dashboard-island__signout a:hover {
+    background: color-mix(in srgb, var(--color-red) 10%, transparent);
 }
 
+/* ============================================
+   DASHBOARD MAIN CONTENT AREA
+   ============================================ */
 .dashboard-main {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
 }
 
 .dashboard-header {
@@ -58,14 +132,18 @@
 }
 
 .dashboard-header h1 {
-    color: var(--text-color);
+    font-family: var(--font-family-variable);
+    color: var(--color-gray11);
     margin-bottom: var(--spacing-xs);
 }
 
 .dashboard-header p {
-    color: var(--text-light);
+    color: var(--color-gray6);
 }
 
+/* ============================================
+   DASHBOARD STAT CARDS
+   ============================================ */
 .dashboard-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -74,31 +152,58 @@
 }
 
 .stat-card {
-    background-color: var(--bg-white);
-    border-radius: var(--radius-lg);
+    border-radius: var(--border-radius-item-lg);
     padding: var(--spacing-lg);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--elevation-1);
 }
 
 .stat-card h3 {
-    color: var(--text-light);
-    font-size: 0.875rem;
+    color: var(--color-gray6);
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    font-weight: 500;
     margin-bottom: var(--spacing-sm);
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--color-blue);
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
-    .dashboard-container {
+    .dashboard-layout {
         flex-direction: column;
+        padding: var(--spacing-sm);
     }
-    
-    .dashboard-sidebar {
+
+    .dashboard-island {
         width: 100%;
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: var(--border-radius-item-xl);
+    }
+
+    .dashboard-island__brand,
+    .dashboard-island__user {
+        border-bottom: none;
+        border-right: var(--border-width-hairline) solid
+            color-mix(in srgb, var(--color-gray12) 8%, transparent);
+    }
+
+    .dashboard-island__nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: var(--spacing-xs);
+    }
+
+    .dashboard-island__signout {
+        border-top: none;
+        border-left: var(--border-width-hairline) solid
+            color-mix(in srgb, var(--color-gray12) 8%, transparent);
     }
 }

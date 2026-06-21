@@ -483,7 +483,7 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 35px;
+    padding: var(--spacing-2xl);
     margin: 0 auto var(--spacing-xl) auto;
     max-width: 1280px;
     transition: all 400ms cubic-bezier(1, 0, 0.4, 1);
@@ -520,7 +520,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: 14px 28px;
+    padding: var(--spacing-sm) var(--spacing-xl);
     border: none;
     border-radius: var(--border-radius-pill);
     font-family: inherit;

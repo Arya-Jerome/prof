@@ -19,10 +19,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="base-body {% if landing_page %}landing-page-body{% endif %}">
-    {% if not landing_page %}
+    {% block navbar %}
     <!-- Navbar -->
     {% include 'core/partials/_navbar.html' %}
-    {% endif %}
+    {% endblock %}
     
     <!-- Messages -->
     {% include 'core/partials/_messages.html' %}
@@ -32,10 +32,10 @@
         {% block content %}{% endblock %}
     </main>
     
-    {% if not landing_page %}
+    {% block footer %}
     <!-- Footer -->
     {% include 'core/partials/_footer.html' %}
-    {% endif %}
+    {% endblock %}
     
     <!-- JavaScript -->
     <script src="{% static 'js/base.js' %}"></script>
