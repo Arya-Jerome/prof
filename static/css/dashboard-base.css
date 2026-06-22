@@ -173,7 +173,7 @@
 }
 
 .dashboard-page .site-footer {
-    margin-left: calc(var(--dashboard-sidebar-offset) + var(--spacing-xl));
+    margin-left: var(--dashboard-sidebar-offset);
 }
 
 /* ============================================

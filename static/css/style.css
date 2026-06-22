@@ -580,11 +580,12 @@ body {
 
 
 .site-footer {
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    margin: 0 auto var(--spacing-xl) auto;
     padding: var(--spacing-3xl) var(--spacing-xl);
-    margin: 0 var(--spacing-xl) var(--spacing-xl) var(--spacing-xl);
     transition: all 400ms cubic-bezier(1, 0, 0.4, 1);
     border-radius: var(--border-radius-container-lg);
 }
@@ -600,7 +601,6 @@ body {
 }
 
 .footer-inner {
-    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
