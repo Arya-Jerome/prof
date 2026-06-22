@@ -4,10 +4,8 @@
 .dashboard-layout {
     display: flex;
     min-height: calc(100vh - 120px);
-    max-width: 1280px;
     margin: 0 auto;
-    padding: var(--spacing-lg);
-    padding-left: calc(320px + var(--spacing-md) + var(--spacing-lg)); /* sidebar-width + left-offset + gap */
+    padding: var(--spacing-lg) var(--spacing-3xl) var(--spacing-lg) calc(var(--spacing-3xl) + 320px + var(--spacing-md)); /* offset for fixed left sidebar */
     gap: var(--spacing-lg);
     align-items: flex-start;
     position: relative;
