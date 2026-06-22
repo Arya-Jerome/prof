@@ -56,7 +56,30 @@ def api_user_info_get(request):
                 status=502,
             )
         rows = resp.json()
-        return JsonResponse(rows[0] if rows else {}, safe=False)
+        if not rows:
+            return JsonResponse({}, safe=False)
+
+        row = rows[0]
+
+        # These columns are stored as JSON strings — parse them into real objects
+        # so the frontend receives proper arrays/objects, not raw strings.
+        JSON_COLUMNS = [
+            'education', 'certifications', 'experiences', 'skills',
+            'blocked_industries', 'work_style', 'blocked_companies',
+            'blocked_titles', 'blocked_details',
+        ]
+        for col in JSON_COLUMNS:
+            val = row.get(col)
+            if isinstance(val, str):
+                try:
+                    row[col] = json.loads(val)
+                except (json.JSONDecodeError, ValueError):
+                    row[col] = []
+
+        # Expose 'experiences' under the key 'experience' that the JS expects
+        row['experience'] = row.pop('experiences', [])
+
+        return JsonResponse(row, safe=False)
     except requests.RequestException as e:
         logger.error(f'user_info GET failed: {e}')
         return JsonResponse({'error': str(e)}, status=502)

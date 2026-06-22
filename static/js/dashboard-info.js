@@ -249,9 +249,10 @@
                     addEntryCard('certificationEntries', 'certification-entry-template', 'Certification');
                     const cards = document.querySelectorAll('#certificationEntries .entry-card');
                     const card = cards[cards.length - 1];
-                    setCardField(card, 'cert_name[]', cert.name);
-                    setCardField(card, 'cert_issuer[]', cert.issuer);
-                    setCardField(card, 'cert_issue_date[]', cert.issue_date);
+                    setCardField(card, 'cert_name[]', cert.certification_name);
+                    setCardField(card, 'cert_issuer[]', cert.organization);
+                    const d = cert.date ? cert.date.replace(/^(\d{4})(\d{2}).*/, '$1-$2') : null;
+                    setCardField(card, 'cert_issue_date[]', d);
                 });
             }
 
@@ -269,12 +270,11 @@
                 });
             }
 
-            const blocked = data.blocked || {};
-            if (blockedIndustriesWrapper && Array.isArray(blocked.blocked_industries)) blockedIndustriesWrapper._setTags(blocked.blocked_industries);
-            if (workStyleWrapper && Array.isArray(blocked.work_style)) workStyleWrapper._setTags(blocked.work_style);
-            if (blockedCompaniesWrapper && Array.isArray(blocked.blocked_companies)) blockedCompaniesWrapper._setTags(blocked.blocked_companies);
-            if (blockedTitlesWrapper && Array.isArray(blocked.blocked_titles)) blockedTitlesWrapper._setTags(blocked.blocked_titles);
-            if (blockedDetailsWrapper && Array.isArray(blocked.blocked_details)) blockedDetailsWrapper._setTags(blocked.blocked_details);
+            if (blockedIndustriesWrapper && Array.isArray(data.blocked_industries)) blockedIndustriesWrapper._setTags(data.blocked_industries);
+            if (workStyleWrapper && Array.isArray(data.work_style)) workStyleWrapper._setTags(data.work_style);
+            if (blockedCompaniesWrapper && Array.isArray(data.blocked_companies)) blockedCompaniesWrapper._setTags(data.blocked_companies);
+            if (blockedTitlesWrapper && Array.isArray(data.blocked_titles)) blockedTitlesWrapper._setTags(data.blocked_titles);
+            if (blockedDetailsWrapper && Array.isArray(data.blocked_details)) blockedDetailsWrapper._setTags(data.blocked_details);
 
         } catch (err) {
             console.error('Failed to load user info:', err);
