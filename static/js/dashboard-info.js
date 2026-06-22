@@ -144,8 +144,9 @@
             }, 200);
         });
 
-        // Wire activity tag inputs inside education cards
-        const actWrapper = card.querySelector('.edu-activities-wrapper');
+        // Wire degree searchable dropdown if present
+        const degDd = card.querySelector('.deg-dropdown');
+        if (degDd) initDegDropdown(degDd);
         if (actWrapper) {
             const actInput = actWrapper.querySelector('.tag-input');
             const actHidden = actWrapper.querySelector('input[type="hidden"]');
@@ -190,6 +191,277 @@
     document.getElementById('addExperienceBtn')?.addEventListener('click', function () {
         addEntryCard('experienceEntries', 'experience-entry-template', 'Experience');
     });
+
+        // ── DATE FORMAT NORMALIZER ─────────────────────────
+    /**
+     * Converts any date-like string to "YYYY-MM" for <input type="month">.
+     * Handles:
+     *   "20240501"       → "2024-05"
+     *   "20251202"       → "2025-12"
+     *   "2025"           → "2025-01"  (year-only → Jan of that year)
+     *   "2025-12"        → "2025-12"  (already correct)
+     *   "2025-12-02"     → "2025-12"
+     *   "Dec 2025"       → "2025-12"
+     *   "March 2026"     → "2026-03"
+     *   "Mar 2026"       → "2026-03"
+     *   "2026-03-15T..." → "2026-03"  (ISO datetime)
+     *   null / ""        → ""
+     */
+    var MONTH_MAP = {
+        jan:'01', feb:'02', mar:'03', apr:'04', may:'05', jun:'06',
+        jul:'07', aug:'08', sep:'09', oct:'10', nov:'11', dec:'12',
+        january:'01', february:'02', march:'03', april:'04', june:'06',
+        july:'07', august:'08', september:'09', october:'10', november:'11', december:'12'
+    };
+
+    function toMonthInput(raw) {
+        if (raw == null) return '';
+        var s = String(raw).trim();
+        if (!s) return '';
+
+        // ISO datetime: "2026-03-15T..."
+        if (/^\d{4}-\d{2}-\d{2}T/.test(s)) return s.substring(0, 7);
+
+        // Already YYYY-MM
+        if (/^\d{4}-\d{2}$/.test(s)) return s;
+
+        // YYYY-MM-DD
+        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s.substring(0, 7);
+
+        // YYYYMMDD (8 digits)
+        if (/^\d{8}$/.test(s)) return s.substring(0, 4) + '-' + s.substring(4, 6);
+
+        // YYYYMM (6 digits)
+        if (/^\d{6}$/.test(s)) return s.substring(0, 4) + '-' + s.substring(4, 6);
+
+        // Year only: "2025" → "2025-01"
+        if (/^\d{4}$/.test(s)) return s + '-01';
+
+        // "Mon YYYY" or "Month YYYY" e.g. "Mar 2026", "March 2026"
+        var monYear = s.match(/^([a-zA-Z]+)\s+(\d{4})$/);
+        if (monYear) {
+            var mm = MONTH_MAP[monYear[1].toLowerCase()];
+            if (mm) return monYear[2] + '-' + mm;
+        }
+
+        // "YYYY Mon" or "YYYY Month" e.g. "2026 Mar"
+        var yearMon = s.match(/^(\d{4})\s+([a-zA-Z]+)$/);
+        if (yearMon) {
+            var mm2 = MONTH_MAP[yearMon[2].toLowerCase()];
+            if (mm2) return yearMon[1] + '-' + mm2;
+        }
+
+        // Fallback: try native Date parse, extract YYYY-MM
+        var d = new Date(s);
+        if (!isNaN(d.getTime())) {
+            var y = d.getFullYear();
+            var m = String(d.getMonth() + 1).padStart(2, '0');
+            return y + '-' + m;
+        }
+
+        return ''; // unrecognised — leave blank
+    }
+
+    /**
+     * Converts any date-like string to a 4-digit year string for
+     * <input type="number"> year fields.
+     * "2026"        → "2026"
+     * "2026-03"     → "2026"
+     * "20260315"    → "2026"
+     * "Mar 2026"    → "2026"
+     */
+    function toYearInput(raw) {
+        if (raw == null) return '';
+        var s = String(raw).trim();
+        if (!s) return '';
+        // plain 4-digit year
+        if (/^\d{4}$/.test(s)) return s;
+        // starts with 4 digits followed by separator
+        var m = s.match(/^(\d{4})[\-\/\s]/);
+        if (m) return m[1];
+        // 8-digit compact
+        if (/^\d{8}$/.test(s)) return s.substring(0, 4);
+        // "Mon YYYY"
+        var monYear = s.match(/^[a-zA-Z]+\s+(\d{4})$/);
+        if (monYear) return monYear[1];
+        return '';
+    }
+
+    // ── DEGREE SEARCHABLE DROPDOWN ─────────────────────
+
+    /**
+     * Initialises one .deg-dropdown widget.
+     * Exposes:
+     *   widget.getValue()   → current string value
+     *   widget.setValue(v)  → programmatically select/set a value
+     */
+    function initDegDropdown(root) {
+        if (!root || root._degInit) return;
+        root._degInit = true;
+
+        var trigger   = root.querySelector('.deg-dropdown__trigger');
+        var menu      = root.querySelector('.deg-dropdown__menu');
+        var search    = root.querySelector('.deg-dropdown__search');
+        var list      = root.querySelector('.deg-dropdown__list');
+        var empty     = root.querySelector('.deg-dropdown__empty');
+        var customBtn = root.querySelector('.deg-dropdown__custom-btn');
+        var customLbl = root.querySelector('.deg-dropdown__custom-label');
+        var hidden    = root.querySelector('.deg-dropdown__hidden');
+        var textSpan  = root.querySelector('.deg-dropdown__text');
+
+        function open() {
+            menu.classList.add('is-open');
+            trigger.setAttribute('aria-expanded', 'true');
+            search.value = '';
+            filterItems('');
+            setTimeout(function() { search.focus(); }, 60);
+            // close others
+            document.querySelectorAll('.deg-dropdown__menu.is-open').forEach(function(m) {
+                if (m !== menu) {
+                    var r = m.closest('.deg-dropdown');
+                    if (r) close_dd(r);
+                }
+            });
+        }
+
+        function close_dd(r) {
+            r = r || root;
+            var m = r.querySelector('.deg-dropdown__menu');
+            var t = r.querySelector('.deg-dropdown__trigger');
+            if (m) m.classList.remove('is-open');
+            if (t) t.setAttribute('aria-expanded', 'false');
+        }
+
+        function isOpen() {
+            return menu.classList.contains('is-open');
+        }
+
+        function select(value, label) {
+            hidden.value = value;
+            textSpan.textContent = label || value;
+            textSpan.classList.remove('deg-dropdown__text--placeholder');
+            list.querySelectorAll('.deg-dropdown__item').forEach(function(it) {
+                it.classList.toggle('is-selected', it.getAttribute('data-value') === value);
+            });
+            close_dd();
+        }
+
+        function filterItems(q) {
+            var query = q.toLowerCase().trim();
+            var visible = 0;
+            list.querySelectorAll('.deg-dropdown__item').forEach(function(it) {
+                var text = (it.getAttribute('data-value') + ' ' + it.textContent).toLowerCase();
+                var show = !query || text.includes(query);
+                it.classList.toggle('is-hidden', !show);
+                if (show) visible++;
+            });
+            // Show/hide group labels — hide if all items below them are hidden
+            list.querySelectorAll('.deg-dropdown__group-label').forEach(function(gl) {
+                var next = gl.nextElementSibling;
+                var anyVisible = false;
+                while (next && !next.classList.contains('deg-dropdown__group-label')) {
+                    if (!next.classList.contains('is-hidden')) anyVisible = true;
+                    next = next.nextElementSibling;
+                }
+                gl.style.display = anyVisible ? '' : 'none';
+            });
+            empty.classList.toggle('is-visible', visible === 0);
+            // Custom button: show when query has text and no exact match
+            if (q.trim()) {
+                var exact = Array.from(list.querySelectorAll('.deg-dropdown__item')).some(function(it) {
+                    return it.getAttribute('data-value').toLowerCase() === q.toLowerCase().trim();
+                });
+                customBtn.classList.toggle('is-visible', !exact);
+                if (customLbl) customLbl.textContent = 'Add "' + q.trim() + '"';
+            } else {
+                customBtn.classList.remove('is-visible');
+            }
+        }
+
+        // setValue: called programmatically during data load
+        function setValue(rawValue) {
+            if (rawValue == null || rawValue === '') return;
+            var match = Array.from(list.querySelectorAll('.deg-dropdown__item')).find(function(it) {
+                return it.getAttribute('data-value').toLowerCase() === rawValue.toLowerCase();
+            });
+            if (match) {
+                select(match.getAttribute('data-value'), match.getAttribute('data-value'));
+            } else {
+                // Unknown value — add it dynamically as a new item and select it
+                var newItem = document.createElement('div');
+                newItem.className = 'deg-dropdown__item';
+                newItem.setAttribute('data-value', rawValue);
+                newItem.setAttribute('role', 'option');
+                newItem.textContent = rawValue;
+                // Append before the empty message
+                list.appendChild(newItem);
+                newItem.addEventListener('click', function() {
+                    select(rawValue, rawValue);
+                });
+                select(rawValue, rawValue);
+            }
+        }
+
+        // Events
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            isOpen() ? close_dd() : open();
+        });
+
+        search.addEventListener('click', function(e) { e.stopPropagation(); });
+
+        search.addEventListener('input', function() {
+            filterItems(search.value);
+        });
+
+        search.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                var q = search.value.trim();
+                if (!q) return;
+                // If exactly one item visible, select it; else treat as custom
+                var visible = Array.from(list.querySelectorAll('.deg-dropdown__item:not(.is-hidden)'));
+                if (visible.length === 1) {
+                    select(visible[0].getAttribute('data-value'), visible[0].getAttribute('data-value'));
+                } else {
+                    setValue(q); // add as custom
+                }
+            } else if (e.key === 'Escape') {
+                close_dd();
+            }
+        });
+
+        list.addEventListener('click', function(e) {
+            var item = e.target.closest('.deg-dropdown__item');
+            if (!item) return;
+            select(item.getAttribute('data-value'), item.getAttribute('data-value'));
+        });
+
+        customBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var q = search.value.trim();
+            if (q) setValue(q);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!root.contains(e.target)) close_dd();
+        });
+
+        // Expose API
+        root._degSetValue = setValue;
+        root._degGetValue = function() { return hidden.value; };
+    }
+
+    /**
+     * Called during data load — sets the degree dropdown value on a card.
+     * Replaces the old setSelectOrCustom.
+     */
+    function setDegreeValue(card, rawValue) {
+        var dd = card.querySelector('.deg-dropdown');
+        if (dd && dd._degSetValue) {
+            dd._degSetValue(rawValue);
+        }
+    }
 
     // ── DJANGO API HELPERS ─────────────────────────────
 
@@ -290,12 +562,14 @@
                     addEntryCard('educationEntries', 'education-entry-template', 'Degree');
                     const cards = document.querySelectorAll('#educationEntries .entry-card');
                     const card = cards[cards.length - 1];
-                    setCardField(card, 'edu_degree[]', edu.degree);
+                    // Use the searchable dropdown — adds unknown values dynamically
+                    setDegreeValue(card, edu.degree || null);
                     setCardField(card, 'edu_major[]', edu.major);
                     setCardField(card, 'edu_institution[]', edu.institution);
-                    setCardField(card, 'edu_start_year[]', edu.start_year);
-                    setCardField(card, 'edu_end_year[]', edu.end_year);
-                    setCardField(card, 'edu_gpa[]', edu.gpa);
+                    // start_year / end_year: normalize to plain year string
+                    setCardField(card, 'edu_start_year[]', toYearInput(edu.start_year));
+                    setCardField(card, 'edu_end_year[]', toYearInput(edu.end_year));
+                    setCardField(card, 'edu_gpa[]', edu.gpa != null ? edu.gpa : '');
                     setCardField(card, 'edu_honors[]', edu.honors);
                     const actWrapper = card.querySelector('.edu-activities-wrapper');
                     if (actWrapper && Array.isArray(edu.activities)) actWrapper._setTags(edu.activities);
@@ -307,10 +581,12 @@
                     addEntryCard('certificationEntries', 'certification-entry-template', 'Certification');
                     const cards = document.querySelectorAll('#certificationEntries .entry-card');
                     const card = cards[cards.length - 1];
-                    setCardField(card, 'cert_name[]', cert.certification_name);
-                    setCardField(card, 'cert_issuer[]', cert.organization);
-                    const d = cert.date ? cert.date.replace(/^(\d{4})(\d{2}).*/, '$1-$2') : null;
-                    setCardField(card, 'cert_issue_date[]', d);
+                    // Support both key variants: certification_name or name
+                    setCardField(card, 'cert_name[]', cert.certification_name || cert.name || null);
+                    // Support both key variants: organization or issuer
+                    setCardField(card, 'cert_issuer[]', cert.organization || cert.issuer || null);
+                    // Normalize any date format to YYYY-MM for <input type="month">
+                    setCardField(card, 'cert_issue_date[]', toMonthInput(cert.date || cert.issue_date || null));
                 });
             }
 
@@ -321,8 +597,8 @@
                     const card = cards[cards.length - 1];
                     setCardField(card, 'exp_job_title[]', exp.job_title);
                     setCardField(card, 'exp_company[]', exp.company);
-                    setCardField(card, 'exp_start_date[]', exp.start_date);
-                    setCardField(card, 'exp_end_date[]', exp.end_date);
+                    setCardField(card, 'exp_start_date[]', toMonthInput(exp.start_date));
+                    setCardField(card, 'exp_end_date[]', toMonthInput(exp.end_date));
                     const bulletsWrapper = card.querySelector('.exp-bullets-wrapper');
                     if (bulletsWrapper && Array.isArray(exp.bullets)) bulletsWrapper._setTags(exp.bullets);
                 });
@@ -579,8 +855,9 @@
             }, 200);
         });
 
-        // Wire activity tag inputs inside education cards
-        const actWrapper = card.querySelector('.edu-activities-wrapper');
+        // Wire degree searchable dropdown if present
+        const degDd = card.querySelector('.deg-dropdown');
+        if (degDd) initDegDropdown(degDd);
         if (actWrapper) {
             const actInput = actWrapper.querySelector('.tag-input');
             const actHidden = actWrapper.querySelector('input[type="hidden"]');
@@ -684,11 +961,12 @@
                     addEntryCard('certificationEntries', 'certification-entry-template', 'Certification');
                     const cards = document.querySelectorAll('#certificationEntries .entry-card');
                     const card = cards[cards.length - 1];
-                    setCardField(card, 'cert_name[]', cert.name);
-                    setCardField(card, 'cert_issuer[]', cert.issuer);
-                    setCardField(card, 'cert_issue_date[]', cert.issue_date);
-                    setCardField(card, 'cert_expiry_date[]', cert.expiry_date);
-                    setCardField(card, 'cert_credential_id[]', cert.credential_id);
+                    // Support both key variants: certification_name or name
+                    setCardField(card, 'cert_name[]', cert.certification_name || cert.name || null);
+                    // Support both key variants: organization or issuer
+                    setCardField(card, 'cert_issuer[]', cert.organization || cert.issuer || null);
+                    // Normalize any date format to YYYY-MM for <input type="month">
+                    setCardField(card, 'cert_issue_date[]', toMonthInput(cert.date || cert.issue_date || null));
                 });
             }
 
@@ -702,8 +980,8 @@
                     setCardField(card, 'exp_company[]', exp.company);
                     setCardField(card, 'exp_location[]', exp.location);
                     setCardField(card, 'exp_type[]', exp.type);
-                    setCardField(card, 'exp_start_date[]', exp.start_date);
-                    setCardField(card, 'exp_end_date[]', exp.end_date);
+                    setCardField(card, 'exp_start_date[]', toMonthInput(exp.start_date));
+                    setCardField(card, 'exp_end_date[]', toMonthInput(exp.end_date));
                     setCardField(card, 'exp_description[]', exp.description);
                 });
             }
