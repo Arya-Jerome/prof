@@ -455,9 +455,9 @@
 
         var certifications = getAll('cert_name[]').map(function (_, i) {
             return {
-                name:       getAll('cert_name[]')[i]       || '',
-                issuer:     getAll('cert_issuer[]')[i]     || '',
-                issue_date: getAll('cert_issue_date[]')[i] || null,
+                certification_name: getAll('cert_name[]')[i]       || '',
+                organization:       getAll('cert_issuer[]')[i]     || '',
+                date:               getAll('cert_issue_date[]')[i] || null,
             };
         });
 
