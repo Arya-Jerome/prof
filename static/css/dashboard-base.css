@@ -173,10 +173,8 @@
 }
 
 .dashboard-page .site-footer {
-    margin-left: var(--dashboard-sidebar-offset);
+    margin-left: calc(var(--dashboard-sidebar-offset) + var(--spacing-xl));
 }
-
-
 
 /* ============================================
    RESPONSIVE
@@ -229,7 +227,7 @@
             color-mix(in srgb, var(--color-gray12) 8%, transparent);
     }
     .dashboard-page .site-header .header-container,
-    .dashboard-page .site-footer .footer-inner {
-        padding-left: var(--spacing-lg);
+    .dashboard-page .site-footer {
+        margin-left: var(--spacing-xl);
     }
 }

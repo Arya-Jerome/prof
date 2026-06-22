@@ -584,8 +584,7 @@ body {
     flex-direction: column;
     box-sizing: border-box;
     padding: var(--spacing-3xl) var(--spacing-xl);
-    margin: 0 auto var(--spacing-xl) auto;
-    max-width: 1200px;
+    margin: 0 var(--spacing-xl) var(--spacing-xl) var(--spacing-xl);
     transition: all 400ms cubic-bezier(1, 0, 0.4, 1);
     border-radius: var(--border-radius-container-lg);
 }
@@ -601,7 +600,7 @@ body {
 }
 
 .footer-inner {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
