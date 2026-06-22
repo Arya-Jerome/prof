@@ -80,30 +80,43 @@ h3, h4, h5, h6, p, span, div, li, a, button, input, textarea, select {
 }
 
 /* ── Custom scrollbar ── */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-gray4) var(--color-gray2);
+
+/* 1. Standard rules ONLY for Firefox */
+@supports (-moz-appearance: none) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-gray4) transparent;
+    }
 }
 
+/* 2. WebKit rules for Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 9px;
+    height: 9px;
 }
 
+/* Invisible track with top/bottom padding */
 ::-webkit-scrollbar-track {
-    background: var(--color-gray2);
-    border-radius: var(--border-radius-pill);
+    background: transparent;
+    margin-block: 9px; /* Adds padding to the top and bottom */
+    margin-inline: 9px; /* Adds padding to the left and right (for horizontal scrollbars) */
 }
 
+/* Floating pill thumb */
 ::-webkit-scrollbar-thumb {
-    background: var(--color-gray4);
+    background-color: var(--color-gray4);
     border-radius: var(--border-radius-pill);
+    border: 1px solid transparent; /* Invisible padding around the thumb */
+    background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gray6);
+    background-color: var(--color-gray6);
 }
 
+/* Explicitly disable the arrows/buttons in WebKit */
 ::-webkit-scrollbar-button {
-    display: none;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
