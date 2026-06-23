@@ -27,12 +27,14 @@
         return wrapper;
     }
 
-    const skillsWrapper             = initStaticTagInput('skills-tag-wrapper',             'skills-input',             'skills-hidden');
-    const blockedIndustriesWrapper  = initStaticTagInput('blocked-industries-tag-wrapper',  'blocked-industries-input', 'blocked-industries-hidden');
-    const workStyleWrapper          = initStaticTagInput('work-style-tag-wrapper',          'work-style-input',         'work-style-hidden');
-    const blockedCompaniesWrapper   = initStaticTagInput('blocked-companies-tag-wrapper',   'blocked-companies-input',  'blocked-companies-hidden');
-    const blockedTitlesWrapper      = initStaticTagInput('blocked-titles-tag-wrapper',      'blocked-titles-input',     'blocked-titles-hidden');
-    const blockedDetailsWrapper     = initStaticTagInput('blocked-details-tag-wrapper',     'blocked-details-input',    'blocked-details-hidden');
+    // These are initialised lazily after clearSectionSkeletons() restores the DOM.
+    // Declaring as let so they can be reassigned each time loadUserInfo() runs.
+    let skillsWrapper             = null;
+    let blockedIndustriesWrapper  = null;
+    let workStyleWrapper          = null;
+    let blockedCompaniesWrapper   = null;
+    let blockedTitlesWrapper      = null;
+    let blockedDetailsWrapper     = null;
 
     // ══════════════════════════════════════════════════
     // DATE FORMAT NORMALIZERS
@@ -412,6 +414,15 @@
         try {
             const data = await attempt(1);
             clearSectionSkeletons();
+
+            // Re-query wrappers after skeleton restore (innerHTML replacement detaches old nodes)
+            skillsWrapper             = initStaticTagInput('skills-tag-wrapper',             'skills-input',             'skills-hidden');
+            blockedIndustriesWrapper  = initStaticTagInput('blocked-industries-tag-wrapper',  'blocked-industries-input', 'blocked-industries-hidden');
+            workStyleWrapper          = initStaticTagInput('work-style-tag-wrapper',          'work-style-input',         'work-style-hidden');
+            blockedCompaniesWrapper   = initStaticTagInput('blocked-companies-tag-wrapper',   'blocked-companies-input',  'blocked-companies-hidden');
+            blockedTitlesWrapper      = initStaticTagInput('blocked-titles-tag-wrapper',      'blocked-titles-input',     'blocked-titles-hidden');
+            blockedDetailsWrapper     = initStaticTagInput('blocked-details-tag-wrapper',     'blocked-details-input',    'blocked-details-hidden');
+
             if (!data || Object.keys(data).length === 0) return;
 
             // Personal
