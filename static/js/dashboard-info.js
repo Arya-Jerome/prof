@@ -682,9 +682,29 @@
         }, 210);
     }
 
-    // dirty = user has unsaved changes; saved = last action was a successful save
-    var _formDirty = false;
-    var _formSaved = false;
+    // ── Baseline snapshot — what was last saved/loaded ─────────────────────────
+    // Stored as JSON string for cheap deep-equality comparison.
+    var _savedSnapshot = null;
+
+    /**
+     * Capture the current form state as a JSON string.
+     * Called after load and after each successful save.
+     */
+    function _captureSnapshot() {
+        _savedSnapshot = JSON.stringify(collectFormData());
+    }
+
+    /**
+     * Returns true if the current form state differs from the saved baseline.
+     * Falls back to true (treat as dirty) when no baseline exists yet.
+     */
+    function _isFormDirty() {
+        if (_savedSnapshot === null) return false;
+        return JSON.stringify(collectFormData()) !== _savedSnapshot;
+    }
+
+    // Track button in-flight state
+    var _btnSaving = false;
 
     function _setBtnGlass(btn, state) {
         btn.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
@@ -696,32 +716,57 @@
             btn.classList.add('glass');
             btn.disabled = true;
         } else {
+            // 'idle' = dirty, active
             btn.classList.add('glass-dark');
             btn.disabled = false;
         }
     }
 
-    function _markDirty() {
+    /**
+     * Central function that re-evaluates dirty state and updates button appearance.
+     * Safe to call at any time — idempotent, no side effects on save flow.
+     */
+    function _syncSaveBtn() {
         var btn = document.getElementById('saveInfoBtn');
         if (!btn) return;
-        if (_formDirty) return;
-        _formDirty = true;
-        _formSaved = false;
-        if (btn.getAttribute('data-state') === 'idle' || btn.getAttribute('data-state') === 'success') {
-            btn.setAttribute('data-state', 'idle');
+        // Never override the button while a save is in progress
+        if (_btnSaving) return;
+        // Never override while data is still loading
+        if (_isLoading) return;
+
+        var dirty = _isFormDirty();
+
+        if (dirty) {
+            if (btn.getAttribute('data-state') !== 'idle') {
+                btn.setAttribute('data-state', 'idle');
+            }
             _setBtnGlass(btn, 'idle');
+        } else {
+            // Pristine: either just loaded, just saved, or user reverted all changes
+            var currentState = btn.getAttribute('data-state');
+            // Keep 'success' glass briefly until it times out naturally;
+            // only force pristine if we're in idle state.
+            if (currentState !== 'success') {
+                btn.setAttribute('data-state', 'idle');
+                _setBtnGlass(btn, 'pristine');
+            }
         }
     }
 
+    // Kept as public API for tag inputs and dynamic cards to call
+    function _markDirty() {
+        _syncSaveBtn();
+    }
+
     document.getElementById('saveInfoBtn')?.addEventListener('mouseenter', function () {
-        if (this.getAttribute('data-state') === 'idle' && _formDirty) {
+        if (this.getAttribute('data-state') === 'idle' && !this.disabled) {
             this.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
             this.classList.add('blue-glass');
         }
     });
 
     document.getElementById('saveInfoBtn')?.addEventListener('mouseleave', function () {
-        if (this.getAttribute('data-state') === 'idle' && _formDirty) {
+        if (this.getAttribute('data-state') === 'idle' && !this.disabled) {
             this.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
             this.classList.add('glass-dark');
         }
@@ -736,6 +781,7 @@
             _buildSaveBtn(saveBtn);
         }
 
+        _btnSaving = true;
         saveBtn.disabled = true;
         saveBtn.setAttribute('data-state', 'loading');
         _setBtnGlass(saveBtn, 'loading');
@@ -754,17 +800,38 @@
         try {
             await apiFetch('/dashboard/api/user-info/save/', 'POST', collectFormData());
             clearInterval(msgTimer);
-            _formDirty = false;
-            _formSaved = true;
+            // Snapshot the newly saved state so future comparisons are against this
+            _captureSnapshot();
+            _btnSaving = false;
             saveBtn.setAttribute('data-state', 'success');
             _setBtnGlass(saveBtn, 'success');
             _transitionBtnIcon(saveBtn, CHECK_ICON_SVG);
             _transitionBtnText(saveBtn, 'Saved!');
             saveBtn.disabled = true;
+
+            // After 2.5s: transition back to pristine (no unsaved changes)
+            setTimeout(function () {
+                var btn2 = document.getElementById('saveInfoBtn');
+                if (!btn2) return;
+                // Only revert to pristine if user hasn't made new changes meanwhile
+                if (!_isFormDirty()) {
+                    btn2.setAttribute('data-state', 'idle');
+                    _setBtnGlass(btn2, 'pristine');
+                    _transitionBtnIcon(btn2, SAVE_ICON_SVG);
+                    _transitionBtnText(btn2, 'Save Changes');
+                } else {
+                    // User made changes during the success flash — go active
+                    btn2.setAttribute('data-state', 'idle');
+                    _setBtnGlass(btn2, 'idle');
+                    _transitionBtnIcon(btn2, SAVE_ICON_SVG);
+                    _transitionBtnText(btn2, 'Save Changes');
+                }
+            }, 2500);
+
         } catch (err) {
             clearInterval(msgTimer);
             console.error('Save failed:', err);
-            _formDirty = true;
+            _btnSaving = false;
             saveBtn.setAttribute('data-state', 'idle');
             _setBtnGlass(saveBtn, 'idle');
             _transitionBtnIcon(saveBtn, SAVE_ICON_SVG);
@@ -780,13 +847,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         loadUserInfo();
 
-        // Mark form dirty on any input change
+        // Re-evaluate dirty state on every input/change event
         var form = document.getElementById('infoForm');
         if (form) {
-            form.addEventListener('input', _markDirty);
-            form.addEventListener('change', _markDirty);
+            form.addEventListener('input', _syncSaveBtn);
+            form.addEventListener('change', _syncSaveBtn);
         }
-        // Also expose _markDirty for tag inputs and dynamic entry cards
+        // Expose for tag inputs and dynamic entry cards
         window._markInfoFormDirty = _markDirty;
     });
 

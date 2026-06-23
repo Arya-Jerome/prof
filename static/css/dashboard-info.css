@@ -285,8 +285,14 @@ DASHBOARD INFO — Page-specific styles
 }
 
 #saveInfoBtn:disabled {
-    opacity: 0.7;
+    opacity: 1;
     cursor: not-allowed;
+}
+
+/* Pristine (glass) state — icon and text must be visibly gray */
+#saveInfoBtn.glass .save-btn__icon,
+#saveInfoBtn.glass .save-btn__text {
+    color: var(--color-gray6);
 }
 
 /* ── Icon slot ── */
