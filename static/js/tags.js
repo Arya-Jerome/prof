@@ -118,10 +118,6 @@
             if (e.key === 'Enter' || e.key === ',') {
                 e.preventDefault();
                 commitInput();
-            } else if (e.key === 'Backspace' && textInput.value === '' && tags.length > 0) {
-                tags.pop();
-                renderTags();
-                syncHidden();
             }
         });
 
