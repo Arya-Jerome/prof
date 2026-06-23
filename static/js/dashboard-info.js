@@ -456,7 +456,10 @@
             if (!fullResp.ok) throw new Error('HTTP ' + fullResp.status);
             const data = await fullResp.json();
 
-            // Re-init tag wrappers after skeleton innerHTML replacement
+            // 1. Restore the real DOM first (clears skeleton innerHTML)
+            clearSectionSkeletons();
+
+            // 2. Re-init tag wrappers now that the real DOM nodes are back
             skillsWrapper             = initStaticTagInput('skills-tag-wrapper',             'skills-input',             'skills-hidden');
             blockedIndustriesWrapper  = initStaticTagInput('blocked-industries-tag-wrapper',  'blocked-industries-input', 'blocked-industries-hidden');
             workStyleWrapper          = initStaticTagInput('work-style-tag-wrapper',          'work-style-input',         'work-style-hidden');
@@ -464,8 +467,9 @@
             blockedTitlesWrapper      = initStaticTagInput('blocked-titles-tag-wrapper',      'blocked-titles-input',     'blocked-titles-hidden');
             blockedDetailsWrapper     = initStaticTagInput('blocked-details-tag-wrapper',     'blocked-details-input',    'blocked-details-hidden');
 
+            // 3. Populate fields — entry cards append to real containers, tags fill real wrappers
             _applyArrayData(data);
-            clearSectionSkeletons(); // clears education, skills, blocked, etc.
+
         } catch (err) {
             console.error('[Phase 2] full load failed:', err);
             clearSectionSkeletons();
@@ -486,18 +490,49 @@
     function _applyArrayData(data) {
         if (!data || !Object.keys(data).length) return;
 
-        // Education, Certifications, Experience
-        (data.education      || []).forEach(function (e) { addEntryCard('education',      e); });
-        (data.certifications || []).forEach(function (e) { addEntryCard('certification',  e); });
-        (data.experience     || []).forEach(function (e) { addEntryCard('experience',     e); });
+        // Education
+        (data.education || []).forEach(function (e) {
+            var card = addEntryCard('educationEntries', 'education-entry-template', 'Degree');
+            if (!card) return;
+            setDegreeValue(card, e.degree);
+            setCardField(card, 'edu_major[]',       e.major);
+            setCardField(card, 'edu_institution[]',  e.institution);
+            setCardField(card, 'edu_start_year[]',   toYearInput(e.start_year));
+            setCardField(card, 'edu_end_year[]',     toYearInput(e.end_year));
+            setCardField(card, 'edu_gpa[]',          e.gpa);
+            setCardField(card, 'edu_honors[]',       e.honors);
+            var actWrapper = card.querySelector('.edu-activities-wrapper');
+            if (actWrapper && actWrapper._setTags) actWrapper._setTags(e.activities || []);
+        });
+
+        // Certifications
+        (data.certifications || []).forEach(function (e) {
+            var card = addEntryCard('certificationEntries', 'certification-entry-template', 'Certification');
+            if (!card) return;
+            setCardField(card, 'cert_name[]',        e.certification_name);
+            setCardField(card, 'cert_issuer[]',      e.organization);
+            setCardField(card, 'cert_issue_date[]',  toMonthInput(e.date));
+        });
+
+        // Experience
+        (data.experience || []).forEach(function (e) {
+            var card = addEntryCard('experienceEntries', 'experience-entry-template', 'Experience');
+            if (!card) return;
+            setCardField(card, 'exp_job_title[]',  e.job_title);
+            setCardField(card, 'exp_company[]',    e.company);
+            setCardField(card, 'exp_start_date[]', toMonthInput(e.start_date));
+            setCardField(card, 'exp_end_date[]',   toMonthInput(e.end_date));
+            var bulletsWrapper = card.querySelector('.exp-bullets-wrapper');
+            if (bulletsWrapper && bulletsWrapper._setTags) bulletsWrapper._setTags(e.bullets || []);
+        });
 
         // Tag inputs — wrappers must already be re-initialised before calling _setTags
-        if (skillsWrapper?._setTags)            skillsWrapper._setTags(data.skills             || []);
-        if (blockedIndustriesWrapper?._setTags) blockedIndustriesWrapper._setTags(data.blocked_industries || []);
-        if (workStyleWrapper?._setTags)         workStyleWrapper._setTags(data.work_style        || []);
-        if (blockedCompaniesWrapper?._setTags)  blockedCompaniesWrapper._setTags(data.blocked_companies  || []);
-        if (blockedTitlesWrapper?._setTags)     blockedTitlesWrapper._setTags(data.blocked_titles    || []);
-        if (blockedDetailsWrapper?._setTags)    blockedDetailsWrapper._setTags(data.blocked_details   || []);
+        if (skillsWrapper && skillsWrapper._setTags)            skillsWrapper._setTags(data.skills             || []);
+        if (blockedIndustriesWrapper && blockedIndustriesWrapper._setTags) blockedIndustriesWrapper._setTags(data.blocked_industries || []);
+        if (workStyleWrapper && workStyleWrapper._setTags)         workStyleWrapper._setTags(data.work_style        || []);
+        if (blockedCompaniesWrapper && blockedCompaniesWrapper._setTags)  blockedCompaniesWrapper._setTags(data.blocked_companies  || []);
+        if (blockedTitlesWrapper && blockedTitlesWrapper._setTags)     blockedTitlesWrapper._setTags(data.blocked_titles    || []);
+        if (blockedDetailsWrapper && blockedDetailsWrapper._setTags)    blockedDetailsWrapper._setTags(data.blocked_details   || []);
     }
 
     function setFieldValue(id, value) {
