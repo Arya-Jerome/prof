@@ -120,6 +120,11 @@
     line-height: 1;
 }
 
+.tag-wrapper.row .tag-item__remove {
+    margin-top: auto;
+    margin-bottom: 2px;
+}
+
 .tag-item__remove:hover {
     opacity: 1;
     background: color-mix(in srgb, var(--color-red) 15%, transparent);
