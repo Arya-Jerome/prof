@@ -275,65 +275,13 @@ DASHBOARD INFO — Page-specific styles
     font-family: var(--font-family-base);
     font-size: 15px;
     font-weight: 600;
+    color: var(--color-gray2);
     cursor: pointer;
     overflow: hidden;
-    /* Dark glass surface */
-    background-image: linear-gradient(
-        135deg,
-        var(--color-gray10) 0%,
-        var(--color-gray11) 30%
-    );
-    backdrop-filter: blur(2px) saturate(1.8);
-    -webkit-backdrop-filter: blur(2px) saturate(1.8);
-    color: var(--color-gray2);
-    box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--color-gray8) 4%, transparent),
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--color-gray8) 12%, transparent),
-        inset -2px -2px 0px -2px color-mix(in srgb, var(--color-gray8) 10%, transparent),
-        inset -3px -8px 1px -6px color-mix(in srgb, var(--color-gray8) 8%, transparent),
-        inset -0.3px -1px 4px 0px color-mix(in srgb, #000 25%, transparent),
-        inset -1.5px 2.5px 0px -2px color-mix(in srgb, #000 30%, transparent),
-        inset 0px 3px 4px -2px color-mix(in srgb, #000 30%, transparent),
-        inset 2px -6.5px 1px -4px color-mix(in srgb, #000 25%, transparent),
-        0px 1px 5px 0px color-mix(in srgb, #000 15%, transparent),
-        0px 6px 16px 0px color-mix(in srgb, #000 12%, transparent);
     transition:
         box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
+        background-image 400ms cubic-bezier(1, 0, 0.4, 1),
         opacity 200ms ease;
-}
-
-/* specular top edge highlight */
-#saveInfoBtn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.18) 0%,
-        rgba(255, 255, 255, 0) 40%
-    );
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-#saveInfoBtn:hover:not(:disabled) {
-    box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--color-gray8) 8%, transparent),
-        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--color-gray8) 18%, transparent),
-        inset -2px -2px 0px -2px color-mix(in srgb, var(--color-gray8) 14%, transparent),
-        inset -3px -8px 1px -6px color-mix(in srgb, var(--color-gray8) 10%, transparent),
-        inset -0.3px -1px 4px 0px color-mix(in srgb, #000 28%, transparent),
-        inset -1.5px 2.5px 0px -2px color-mix(in srgb, #000 34%, transparent),
-        inset 0px 3px 4px -2px color-mix(in srgb, #000 34%, transparent),
-        inset 2px -6.5px 1px -4px color-mix(in srgb, #000 28%, transparent),
-        0px 2px 8px 0px color-mix(in srgb, #000 20%, transparent),
-        0px 10px 24px 0px color-mix(in srgb, #000 18%, transparent);
 }
 
 #saveInfoBtn:disabled {

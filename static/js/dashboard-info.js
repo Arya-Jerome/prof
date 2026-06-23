@@ -680,6 +680,27 @@
         }, 210);
     }
 
+    function _setBtnGlass(btn, state) {
+        btn.classList.remove('glass-dark', 'blue-glass', 'green-glass');
+        if (state === 'loading') btn.classList.add('blue-glass');
+        else if (state === 'success') btn.classList.add('green-glass');
+        else btn.classList.add('glass-dark');
+    }
+
+    document.getElementById('saveInfoBtn')?.addEventListener('mouseenter', function () {
+        if (this.getAttribute('data-state') === 'idle') {
+            this.classList.remove('glass-dark', 'blue-glass', 'green-glass');
+            this.classList.add('blue-glass');
+        }
+    });
+
+    document.getElementById('saveInfoBtn')?.addEventListener('mouseleave', function () {
+        if (this.getAttribute('data-state') === 'idle') {
+            this.classList.remove('glass-dark', 'blue-glass', 'green-glass');
+            this.classList.add('glass-dark');
+        }
+    });
+
     document.getElementById('infoForm')?.addEventListener('submit', async function (e) {
         e.preventDefault();
         var saveBtn = document.getElementById('saveInfoBtn');
@@ -691,6 +712,7 @@
 
         saveBtn.disabled = true;
         saveBtn.setAttribute('data-state', 'loading');
+        _setBtnGlass(saveBtn, 'loading');
         _transitionBtnIcon(saveBtn, LOADING_ICON_SVG);
         _transitionBtnText(saveBtn, LOADING_MESSAGES[0]);
 
@@ -707,10 +729,12 @@
             await apiFetch('/dashboard/api/user-info/save/', 'POST', collectFormData());
             clearInterval(msgTimer);
             saveBtn.setAttribute('data-state', 'success');
+            _setBtnGlass(saveBtn, 'success');
             _transitionBtnIcon(saveBtn, CHECK_ICON_SVG);
             _transitionBtnText(saveBtn, 'Saved!');
             setTimeout(function () {
                 saveBtn.setAttribute('data-state', 'idle');
+                _setBtnGlass(saveBtn, 'idle');
                 _transitionBtnIcon(saveBtn, SAVE_ICON_SVG);
                 _transitionBtnText(saveBtn, 'Save Changes');
                 saveBtn.disabled = false;
@@ -719,6 +743,7 @@
             clearInterval(msgTimer);
             console.error('Save failed:', err);
             saveBtn.setAttribute('data-state', 'idle');
+            _setBtnGlass(saveBtn, 'idle');
             _transitionBtnIcon(saveBtn, SAVE_ICON_SVG);
             _transitionBtnText(saveBtn, 'Save failed \u2014 retry');
             saveBtn.disabled = false;
