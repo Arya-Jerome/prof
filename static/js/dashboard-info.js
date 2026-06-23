@@ -710,9 +710,9 @@
     var _btnSaving = false;
 
     function _setBtnGlass(btn, state) {
-        btn.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
+        btn.classList.remove('glass', 'blue-glass', 'indigo-glass', 'green-glass');
         if (state === 'loading') {
-            btn.classList.add('blue-glass');
+            btn.classList.add('indigo-glass');
         } else if (state === 'success') {
             btn.classList.add('green-glass');
         } else if (state === 'pristine') {
@@ -720,7 +720,7 @@
             btn.disabled = true;
         } else {
             // 'idle' = dirty, active
-            btn.classList.add('glass-dark');
+            btn.classList.add('blue-glass');
             btn.disabled = false;
         }
     }
@@ -763,15 +763,15 @@
 
     document.getElementById('saveInfoBtn')?.addEventListener('mouseenter', function () {
         if (this.getAttribute('data-state') === 'idle' && !this.disabled) {
-            this.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
-            this.classList.add('blue-glass');
+            this.classList.remove('glass', 'blue-glass', 'indigo-glass', 'green-glass');
+            this.classList.add('indigo-glass');
         }
     });
 
     document.getElementById('saveInfoBtn')?.addEventListener('mouseleave', function () {
         if (this.getAttribute('data-state') === 'idle' && !this.disabled) {
-            this.classList.remove('glass', 'glass-dark', 'blue-glass', 'green-glass');
-            this.classList.add('glass-dark');
+            this.classList.remove('glass', 'blue-glass', 'indigo-glass', 'green-glass');
+            this.classList.add('blue-glass');
         }
     });
 

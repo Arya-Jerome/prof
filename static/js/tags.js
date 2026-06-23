@@ -104,6 +104,9 @@
 
         function syncHidden() {
             hidden.value = JSON.stringify(tags);
+            // Dispatch a native 'change' event so the form's change listener
+            // (which calls _syncSaveBtn) fires on every tag add/remove.
+            hidden.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
         // ── Add tag ───────────────────────────────────────
