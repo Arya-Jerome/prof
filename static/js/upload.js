@@ -9,7 +9,7 @@
 
     // ── DOM refs ──────────────────────────────────────────────────────────────
     const dropzone  = document.getElementById('resumeDropzone');
-    const dropTarget = dropzone ? dropzone.querySelector('.upload-dropzone') : null;
+    const dropTarget = dropzone;
     const fileInput = document.getElementById('resumeFileInput');
     const uploadBtn = document.getElementById('resumeUploadBtn');
     const fileList  = document.getElementById('resumeFileList');
@@ -44,12 +44,12 @@
     }
 
     // ── Drag events — attached to the whole hero card for wide drop target ────
-    dropzone.addEventListener('dragenter', e => { e.preventDefault(); dropTarget.classList.add('drag-over'); });
-    dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropTarget.classList.add('drag-over'); });
-    dropzone.addEventListener('dragleave', e => { e.preventDefault(); dropTarget.classList.remove('drag-over'); });
+    dropzone.addEventListener('dragenter', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragleave', e => { e.preventDefault(); dropzone.classList.remove('drag-over'); });
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
-        dropTarget.classList.remove('drag-over');
+        dropzone.classList.remove('drag-over');
         handleFiles(e.dataTransfer.files);
     });
 
@@ -195,6 +195,21 @@
         xhr.open('POST', '/dashboard/api/upload-resume/');
         xhr.setRequestHeader('X-CSRFToken', getCsrfToken());
         xhr.send(formData);
+    }
+
+    // ── Send button ───────────────────────────────────────────────────────────
+    const sendBtn = document.getElementById('resumeSendBtn');
+    if (sendBtn) {
+        sendBtn.addEventListener('click', () => {
+            const accepted = fileList.querySelector('[data-state="accepted"], [data-state="done"]');
+            if (!accepted) {
+                alert('Please upload and confirm a resume file first.');
+            } else {
+                // Hook into your backend submit flow here
+                sendBtn.textContent = 'Sent ✓';
+                sendBtn.disabled = true;
+            }
+        });
     }
 
 })();

@@ -14,35 +14,35 @@
 {% block dashboard_content %}
 <!-- ── MASTER RESUME UPLOAD ── -->
 <section class="upload-section" aria-labelledby="upload-section-title">
+    <div class="upload-section__left">
+        <h2 class="upload-section__title" id="upload-section-title">Upload Your<br>Master Resume</h2>
+        <p class="upload-section__desc">Your resume is the starting point for everything. Once uploaded, our system automatically extracts your skills, experience, and preferences — no manual entry needed.</p>
+        <p class="upload-section__desc">You'll get a chance to <strong>review</strong> and <strong>confirm</strong> the details before anything goes live. After that, our agents search continuously and surface only the opportunities that are a strong match for you.</p>
+        <p class="upload-section__scratch"><strong>Prefer to start from scratch?</strong><br>Use the form below to build your profile manually.</p>
+    </div>
+
     <div class="upload-hero blue-glass" id="resumeDropzone" role="region" aria-label="Resume upload area">
-        <h2 class="upload-hero__title" id="upload-section-title">Upload Your Master Resume</h2>
-        <p class="upload-hero__subtitle">Our intelligence layer reads your document and automatically extracts everything we need.</p>
-
-        <div class="upload-dropzone" aria-label="Drop your resume here">
-            <div class="upload-dropzone__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="12" y1="18" x2="12" y2="12"/>
-                    <line x1="9" y1="15" x2="15" y2="15"/>
-                </svg>
-            </div>
-            <span class="upload-dropzone__label">Drag &amp; drop your resume here</span>
-            <span class="upload-dropzone__hint">PDF, DOC or DOCX — max 10 MB</span>
+        <div class="upload-hero__top-icon" aria-hidden="true">
+            <img src="{% static 'img/documents.svg' %}" alt="" width="72" height="72">
         </div>
+        <p class="upload-hero__drag-label">Drag &amp; Drop<br>here or</p>
 
-        <button type="button" class="upload-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            Upload File
+        <button type="button" class="upload-choose-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">
+            choose file
         </button>
 
-        <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx" aria-label="Resume file input">
+        <input type="file" id="resumeFileInput" accept=".csv,.doc,.docx" aria-label="Resume file input">
+
+        <div class="upload-hero__hints" aria-hidden="true">
+            <span>Upload you Resume in CSV, DOC or DOCX format (max 15 MB).</span>
+            <span>Our system will automatically extract your information — this takes a few minutes. Come back here to review and confirm before our agents start working.</span>
+        </div>
 
         <div class="upload-file-list" id="resumeFileList" role="list" aria-label="Uploaded files" aria-live="polite"></div>
+
+        <div class="upload-hero__footer">
+            <button type="button" class="upload-send-btn" id="resumeSendBtn" aria-label="Send resume">Send</button>
+        </div>
     </div>
 </section>
 
