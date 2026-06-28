@@ -28,10 +28,8 @@
 
     const ACCEPTED_TYPES = [
         'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
-    const ACCEPTED_EXT = ['.pdf', '.doc', '.docx'];
+    const ACCEPTED_EXT = ['.pdf'];
 
     function isAccepted(file) {
         const ext = '.' + file.name.split('.').pop().toLowerCase();
@@ -49,9 +47,7 @@
     }
 
     function getFileIconClass(file) {
-        const ext = getFileExt(file);
-        if (ext === 'pdf') return 'fa-regular fa-file-pdf';
-        return 'fa-regular fa-file-word';
+        return 'fa-regular fa-file-pdf';
     }
 
     function updateFooterState() {
@@ -145,7 +141,7 @@
     function handleFiles(files) {
         Array.from(files).forEach(file => {
             if (!isAccepted(file)) {
-                alert(`"${file.name}" is not a supported format. Please upload a PDF, DOC or DOCX file.`);
+                alert(`"${file.name}" is not a supported format. Please upload a PDF file.`);
                 return;
             }
             uploadFile(file);
