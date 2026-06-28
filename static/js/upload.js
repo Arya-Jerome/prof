@@ -47,7 +47,7 @@
     }
 
     function getFileIconClass(file) {
-        return 'fa-regular fa-file-pdf';
+        return '';
     }
 
     function updateFooterState() {
@@ -106,7 +106,7 @@
 
         item.innerHTML = `
             <div class="upload-file-item__icon" aria-hidden="true">
-                <i class="${iconClass}"></i>
+                <img src="/static/img/pdf.svg" alt="" width="28" height="28">
             </div>
 
             <div class="upload-file-item__content">
