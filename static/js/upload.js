@@ -33,7 +33,9 @@
     const STATUS_URL         = '/dashboard/api/resume-status/';
 
     // ── State ─────────────────────────────────────────────────────────────────
-    let activeUploads      = 0;
+    let activeUploads      = 0;   // files currently in-flight (XHR not yet settled)
+    let hasUploadedFile    = false; // ≥1 file card is in 'done' state, Send not clicked
+    let hasFileError       = false; // ≥1 file card is in 'error' state (XHR-level error)
     let isDragOver         = false;
     let currentGlass       = 'indigo-glass';
     let lastStateChangeAt  = Date.now();
@@ -66,11 +68,16 @@
      * resumeStatus + interaction flags, without touching the DOM yet.
      */
     function resolveGlass(resumeStatus, hasError) {
-        if (hasError)                          return 'red-glass';
-        if (resumeStatus === 3 || resumeStatus === 4) return 'green-glass';
-        if (resumeStatus === 1 || resumeStatus === 2) return 'teal-glass';
-        // status === 0 (or unknown)
-        if (isDragOver || activeUploads > 0)   return 'purple-glass';
+        // Poll/network error (status unreachable)
+        if (hasError)                                    return 'red-glass';
+        // Server-confirmed terminal states
+        if (resumeStatus === 3 || resumeStatus === 4)    return 'green-glass';
+        if (resumeStatus === 1 || resumeStatus === 2)    return 'teal-glass';
+        // status === 0: XHR-level file error — keep red until file is deleted
+        if (hasFileError)                                return 'red-glass';
+        // status === 0: any active interaction keeps purple
+        // (uploading, drag-over, or file uploaded but Send not yet clicked)
+        if (isDragOver || activeUploads > 0 || hasUploadedFile) return 'purple-glass';
         return 'indigo-glass';
     }
 
@@ -123,6 +130,16 @@
         dropzone.classList.add(newGlass);
         currentGlass      = newGlass;
         lastStateChangeAt = Date.now();
+    }
+
+    /**
+     * Recount hasUploadedFile and hasFileError from the live DOM.
+     * Called whenever a file card is removed so flags stay accurate.
+     */
+    function _recountFileFlags() {
+        const cards = fileList.querySelectorAll('.upload-file-item');
+        hasUploadedFile = Array.from(cards).some(c => c.dataset.state === 'done');
+        hasFileError    = Array.from(cards).some(c => c.dataset.state === 'error');
     }
 
     // ── Status polling ────────────────────────────────────────────────────────
@@ -342,6 +359,8 @@
             xhr.abort();
             item.remove();
             activeUploads = Math.max(0, activeUploads - 1);
+            // Recount file-level flags from remaining DOM cards
+            _recountFileFlags();
             updateFooterState();
             applyGlass(resolveGlass(_cachedStatus, _hasError));
         });
@@ -369,17 +388,14 @@
                 sizeEl.textContent = formatSize(totalBytes) + ' of ' + formatSize(totalBytes);
                 label.textContent  = 'Uploaded';
                 item.dataset.state = 'done';
-
-                // Do NOT poll immediately — status stays 0 until Send is clicked.
-                // Just re-evaluate glass from current live state.
-                applyGlass(resolveGlass(_cachedStatus, _hasError));
+                hasUploadedFile = true;   // keep purple until Send is clicked
             } else {
                 fill.classList.add('upload-progress-bar__fill--error');
                 dot.classList.remove('upload-status-dot--uploading');
                 dot.classList.add('upload-status-dot--error');
                 label.textContent  = 'Upload failed (' + xhr.status + ')';
                 item.dataset.state = 'error';
-                _hasError = true;
+                hasFileError = true;      // XHR-level error — NOT a poll error
             }
 
             updateFooterState();
@@ -393,7 +409,7 @@
             dot.classList.add('upload-status-dot--error');
             label.textContent  = 'Upload failed — check your connection';
             item.dataset.state = 'error';
-            _hasError = true;
+            hasFileError = true;          // XHR-level error — NOT a poll error
             updateFooterState();
             applyGlass(resolveGlass(_cachedStatus, _hasError));
         });
@@ -432,8 +448,9 @@
             if (data.error) throw new Error(data.error);
 
             sendBtn.textContent = 'Sent';
-            _cachedStatus = 1;
-            _hasError     = false;
+            _cachedStatus   = 1;
+            _hasError       = false;
+            hasUploadedFile = false;   // Send consumed the uploaded state
             applyGlass(resolveGlass(_cachedStatus, _hasError));
             fetchResumeStatus();   // confirm server state immediately
 
