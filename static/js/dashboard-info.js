@@ -827,6 +827,13 @@
         }
     });
 
+    document.getElementById('saveInfoBtn')?.addEventListener('mouseleave', function () {
+        if (this.getAttribute('data-state') === 'idle' && !this.disabled) {
+            this.classList.remove('glass', 'blue-glass', 'indigo-glass', 'green-glass');
+            this.classList.add('blue-glass');
+        }
+    });
+
     // ── Undo button — hover glass swap + click restore ─────────────────────────
 
     document.getElementById('undoInfoBtn')?.addEventListener('mouseenter', function () {
@@ -966,6 +973,18 @@
         }
     });
 
+    // ── Public API: lets upload.js push live status updates ───────────────────
+    // upload.js polls /api/resume-status/ every 3 s. Whenever the polled value
+    // changes it calls window._setInfoResumeStatus(newStatus) so this module
+    // can re-evaluate the save button without a page refresh.
+    window._setInfoResumeStatus = function (newStatus) {
+        if (typeof newStatus !== 'number') return;
+        if (newStatus === _resumeStatus) return;   // no change — skip re-render
+        _resumeStatus = newStatus;
+        if (!_isLoading && !_btnSaving) {
+            _syncSaveBtn();
+        }
+    };
     // ── INIT ──────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
         loadUserInfo();
