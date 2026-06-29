@@ -342,8 +342,19 @@
     });
 
     // ── Drag events ───────────────────────────────────────────────────────────
+
+    /**
+     * Drag-and-drop is only permitted when the upload hero is in uploading
+     * status (original_resume_status === 0 or 1).
+     * Any other status (2, 3, 4) silently blocks all drag interaction.
+     */
+    function isDropAllowed() {
+        return _cachedStatus === 0 || _cachedStatus === 1;
+    }
+
     dropzone.addEventListener('dragenter', e => {
         e.preventDefault();
+        if (!isDropAllowed()) return;
         isDragOver = true;
         dropzone.classList.add('drag-over');
         applyGlass(resolveGlass(_cachedStatus, _hasError));
@@ -351,6 +362,7 @@
 
     dropzone.addEventListener('dragover', e => {
         e.preventDefault();
+        if (!isDropAllowed()) return;
         if (!isDragOver) {
             isDragOver = true;
             dropzone.classList.add('drag-over');
@@ -360,6 +372,7 @@
 
     dropzone.addEventListener('dragleave', e => {
         e.preventDefault();
+        if (!isDropAllowed()) return;
         isDragOver = false;
         dropzone.classList.remove('drag-over');
         applyGlass(resolveGlass(_cachedStatus, _hasError));
@@ -367,6 +380,7 @@
 
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
+        if (!isDropAllowed()) return;
         isDragOver = false;
         dropzone.classList.remove('drag-over');
         handleFiles(e.dataTransfer.files);
