@@ -8,6 +8,12 @@
     if (window.__dashboardInfoInit) return;
     window.__dashboardInfoInit = true;
 
+    // Expose loadUserInfo globally so upload.js can trigger a form refresh
+    // when upload hero status transitions to 3 (extracted/confirmed).
+    // Assigned at IIFE parse time — before DOMContentLoaded — so upload.js
+    // polling can call it immediately even on a cold page load with status=3.
+    window._reloadInfoForm = function () { loadUserInfo(); };
+
     // ── Supabase config (injected by Django template) ──
     const SUPABASE_URL = window.SUPABASE_URL || '';
     const SUPABASE_KEY = window.SUPABASE_KEY || '';
