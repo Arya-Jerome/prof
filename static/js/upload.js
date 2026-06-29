@@ -55,6 +55,39 @@
         [UPLOAD_HERO_STATUS.ERROR]:     '/static/img/error.svg',
     };
 
+    // ── Upload hero status → label & hints content ────────────────────────────
+    // Maps each named upload hero status to the drag-label HTML and hints spans.
+    const UPLOAD_HERO_CONTENT = {
+        [UPLOAD_HERO_STATUS.UPLOADING]: {
+            label: 'Drag &amp; Drop here<br>or <button type="button" class="upload-choose-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">choose file</button>',
+            hints: [
+                'Upload your Resume in PDF format (max 15 MB).',
+                'Our system will automatically extract your information — this takes a few minutes. Come back here to review and confirm before our agents start working.',
+            ],
+        },
+        [UPLOAD_HERO_STATUS.ANALYZING]: {
+            label: 'Review and Confirm',
+            hints: [
+                'We\'ve extracted the key information from your resume.',
+                'Please review, edit, and confirm your details before we continue. This helps ensure the highest accuracy before our agents proceed.',
+            ],
+        },
+        [UPLOAD_HERO_STATUS.EXTRACTED]: {
+            label: 'AI Processing in Progress',
+            hints: [
+                'Our AI agents are extracting and organizing your information.',
+                'This may take a few minutes. You can leave this page and return later — your progress will be saved automatically.',
+            ],
+        },
+        [UPLOAD_HERO_STATUS.ERROR]: {
+            label: 'Drag &amp; Drop here<br>or <button type="button" class="upload-choose-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">choose file</button>',
+            hints: [
+                'Upload your Resume in PDF format (max 15 MB).',
+                'Our system will automatically extract your information — this takes a few minutes. Come back here to review and confirm before our agents start working.',
+            ],
+        },
+    };
+
     // ── State ─────────────────────────────────────────────────────────────────
     let activeUploads      = 0;   // files currently in-flight (XHR not yet settled)
     let hasUploadedFile    = false; // ≥1 file card is in 'done' state, Send not clicked
@@ -511,7 +544,6 @@
     // dropzone in HTML — _setGlass only fires on transitions, so the icon must
     // be initialised here explicitly on page load.
     (function initHeroIcon() {
-        if (!heroIconImg) return;
         let heroStatus;
         if (dropzone.classList.contains('teal-glass')) {
             heroStatus = UPLOAD_HERO_STATUS.ANALYZING;
@@ -520,10 +552,36 @@
         } else if (dropzone.classList.contains('red-glass')) {
             heroStatus = UPLOAD_HERO_STATUS.ERROR;
         } else {
-            // indigo-glass (default) or purple-glass → uploading
             heroStatus = UPLOAD_HERO_STATUS.UPLOADING;
         }
-        heroIconImg.src = UPLOAD_HERO_ICON[heroStatus];
+
+        if (heroIconImg) {
+            heroIconImg.src = UPLOAD_HERO_ICON[heroStatus];
+        }
+
+        // Sync label + hints to the initial glass state on page load
+        const heroContent = UPLOAD_HERO_CONTENT[heroStatus];
+        const dragLabelEl = document.getElementById('resumeHeroDragLabel');
+        const hintsEl     = document.getElementById('resumeHeroHints');
+
+        if (dragLabelEl && heroContent) {
+            dragLabelEl.innerHTML = heroContent.label;
+            const newUploadBtn = dragLabelEl.querySelector('#resumeUploadBtn');
+            if (newUploadBtn) {
+                newUploadBtn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    if (fileDialogOpen) return;
+                    fileDialogOpen = true;
+                    fileInput.click();
+                });
+            }
+        }
+
+        if (hintsEl && heroContent) {
+            hintsEl.innerHTML = heroContent.hints
+                .map(h => `<span>${h}</span>`)
+                .join('');
+        }
     })();
 
     startPolling();

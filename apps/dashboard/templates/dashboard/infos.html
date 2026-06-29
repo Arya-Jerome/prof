@@ -32,12 +32,12 @@
             <div class="upload-hero__top-icon" id="resumeHeroIcon" aria-hidden="true">
                 <img src="{% static 'img/document.svg' %}" alt="" width="100" height="100" id="resumeHeroIconImg">
             </div>
-            <p class="upload-hero__drag-label">Drag &amp; Drop here<br>or <button type="button" class="upload-choose-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">choose file</button></p>
+            <p class="upload-hero__drag-label" id="resumeHeroDragLabel">Drag &amp; Drop here<br>or <button type="button" class="upload-choose-btn" id="resumeUploadBtn" aria-label="Choose resume file to upload">choose file</button></p>
         </div>
 
         <input type="file" id="resumeFileInput" accept=".pdf,application/pdf" aria-label="Resume file input">
 
-        <div class="upload-hero__hints" aria-hidden="true">
+        <div class="upload-hero__hints" id="resumeHeroHints" aria-hidden="true">
             <span>Upload your Resume in PDF format (max 15 MB).</span>
             <span>Our system will automatically extract your information — this takes a few minutes. Come back here to review and confirm before our agents start working.</span>
         </div>
