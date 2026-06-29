@@ -455,6 +455,7 @@
     }
 
     async function loadUserInfo() {
+        if (_isLoading) return;   // ← re-entrancy guard: drop concurrent calls
         _isLoading = true;
         _updateSaveBtnLoadingState();
         showSectionSkeletons();
@@ -464,14 +465,15 @@
             const personalResp = await fetch('/dashboard/api/user-info/personal/', {
                 credentials: 'same-origin',
             });
-            clearSingleSectionSkeleton('section-personal-body');
             if (personalResp.ok) {
                 const personal = await personalResp.json();
+                clearSingleSectionSkeleton('section-personal-body');
                 _applyPersonalData(personal);
             }
+            // On non-ok status, leave skeleton until Phase-2 clearSectionSkeletons() runs
         } catch (err) {
             console.error('[Phase 1] personal load failed:', err);
-            clearSingleSectionSkeleton('section-personal-body');
+            // Do NOT call clearSingleSectionSkeleton here — Phase-2 will clear it
         }
 
         // ── Phase 2: JSON array sections ─────────────────────────────────────────
@@ -483,6 +485,14 @@
             const data = await fullResp.json();
 
             clearSectionSkeletons();
+
+            // Clear dynamic entry containers before re-populating to avoid duplicates on reload
+            var _eduContainer  = document.getElementById('educationEntries');
+            var _certContainer = document.getElementById('certificationEntries');
+            var _expContainer  = document.getElementById('experienceEntries');
+            if (_eduContainer)  _eduContainer.innerHTML  = '';
+            if (_certContainer) _certContainer.innerHTML = '';
+            if (_expContainer)  _expContainer.innerHTML  = '';
 
             skillsWrapper             = initStaticTagInput('skills-tag-wrapper',             'skills-input',             'skills-hidden');
             blockedIndustriesWrapper  = initStaticTagInput('blocked-industries-tag-wrapper',  'blocked-industries-input', 'blocked-industries-hidden');
@@ -903,10 +913,6 @@
             }, 3000);
         }
     });
-
-    // ── INIT ──────────────────────────────────────────
-    // Expose loadUserInfo globally so upload.js can trigger a refresh
-    window._reloadInfoForm = loadUserInfo;
 
     // ── INIT ──────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {

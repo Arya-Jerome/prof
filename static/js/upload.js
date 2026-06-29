@@ -186,16 +186,7 @@
         dropzone.classList.add(newGlass);
         currentGlass      = newGlass;
         lastStateChangeAt = Date.now();
-
-        // When status reaches 3/4 (green-glass = extracted/confirmed),
-        // force the info-form to reload and retrieve the extracted data.
-        if (newGlass === 'green-glass' && typeof window._reloadInfoForm === 'function') {
-            window._reloadInfoForm();
-        }
-
-        // ── Sync upload hero icon + content to the new glass status ───────
-
-        // When status reaches 3 (extracted/confirmed), force the info-form to reload
+        // When status reaches green-glass (status 3/4), force the info-form to reload.
         if (newGlass === 'green-glass' && typeof window._reloadInfoForm === 'function') {
             window._reloadInfoForm();
         }
