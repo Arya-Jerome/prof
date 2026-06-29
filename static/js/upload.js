@@ -187,23 +187,45 @@
         currentGlass      = newGlass;
         lastStateChangeAt = Date.now();
 
-        // ── Sync upload hero icon to the new glass status ──────────────────
-        // Resolve the named upload hero status from the active glass class,
-        // then swap the <img> src to its corresponding status icon.
-        if (heroIconImg) {
+        // ── Sync upload hero icon + content to the new glass status ───────
+        {
             let heroStatus;
             if (newGlass === 'teal-glass') {
-                heroStatus = UPLOAD_HERO_STATUS.ANALYZING;   // teal  → analyzing
+                heroStatus = UPLOAD_HERO_STATUS.ANALYZING;
             } else if (newGlass === 'green-glass') {
-                heroStatus = UPLOAD_HERO_STATUS.EXTRACTED;   // green → extracted
+                heroStatus = UPLOAD_HERO_STATUS.EXTRACTED;
             } else if (newGlass === 'red-glass') {
-                heroStatus = UPLOAD_HERO_STATUS.ERROR;        // red   → error
+                heroStatus = UPLOAD_HERO_STATUS.ERROR;
             } else {
-                // indigo-glass (idle) and purple-glass (active upload / drag-over)
-                // both represent the uploading status
-                heroStatus = UPLOAD_HERO_STATUS.UPLOADING;   // indigo / purple → uploading
+                heroStatus = UPLOAD_HERO_STATUS.UPLOADING;
             }
-            heroIconImg.src = UPLOAD_HERO_ICON[heroStatus];
+
+            if (heroIconImg) {
+                heroIconImg.src = UPLOAD_HERO_ICON[heroStatus];
+            }
+
+            const heroContent = UPLOAD_HERO_CONTENT[heroStatus];
+            const dragLabelEl = document.getElementById('resumeHeroDragLabel');
+            const hintsEl     = document.getElementById('resumeHeroHints');
+
+            if (dragLabelEl && heroContent) {
+                dragLabelEl.innerHTML = heroContent.label;
+                const newUploadBtn = dragLabelEl.querySelector('#resumeUploadBtn');
+                if (newUploadBtn) {
+                    newUploadBtn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        if (fileDialogOpen) return;
+                        fileDialogOpen = true;
+                        fileInput.click();
+                    });
+                }
+            }
+
+            if (hintsEl && heroContent) {
+                hintsEl.innerHTML = heroContent.hints
+                    .map(h => `<span>${h}</span>`)
+                    .join('');
+            }
         }
     }
 
