@@ -46,3 +46,5 @@ yarl==1.24.2
 requests>=2.31.0
 magic-pdf[full]
 gunicorn
+
+whitenoise
