@@ -66,17 +66,17 @@
             ],
         },
         [UPLOAD_HERO_STATUS.ANALYZING]: {
-            label: 'Review and Confirm',
+            label: 'AI Processing<br>in Progress',
             hints: [
-                'We\'ve extracted the key information from your resume.',
-                'Please review, edit, and confirm your details before we continue. This helps ensure the highest accuracy before our agents proceed.',
+                'Our AI agents are extracting and organizing your information.',
+                'This may take a few minutes. <strong>You can leave this page and return later</strong> — your progress will be saved automatically.',
             ],
         },
         [UPLOAD_HERO_STATUS.EXTRACTED]: {
-            label: 'AI Processing in Progress',
+            label: 'Review and<br>Confirm',
             hints: [
-                'Our AI agents are extracting and organizing your information.',
-                'This may take a few minutes. You can leave this page and return later — your progress will be saved automatically.',
+                'We\'ve extracted the key information from your resume.',
+                'Please <strong>review, edit, and confirm your details</strong> before we continue. This helps ensure the highest accuracy before our agents proceed.',
             ],
         },
         [UPLOAD_HERO_STATUS.ERROR]: {

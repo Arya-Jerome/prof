@@ -133,6 +133,12 @@
     text-align: left;
 }
 
+.upload-hero__hints strong {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--color-gray1);
+}
+
 /* Hidden real file input */
 #resumeFileInput {
     display: none;

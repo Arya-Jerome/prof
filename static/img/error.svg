@@ -1,14 +1,14 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="3.54 3.25 17.5 17.5"
-  width="200"
-  height="200"
+  viewBox="0 0 200 200"
+  width="140"
+  height="140"
   fill="none"
   color="#265BFF"
 >
   <style>
     @keyframes n-info-mark {
-      0%, 100% { transform: rotate(0deg); transform-origin: 12.29px 12px; }
+      0%, 100% { transform: rotate(0deg); transform-origin: 100px 100px; }
       10%, 90% { transform: rotate(2deg); }
       20%, 40%, 60% { transform: rotate(-6deg); }
       30%, 50%, 70% { transform: rotate(6deg); }
@@ -19,15 +19,17 @@
     }
   </style>
 
-  <circle cx="12.29" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Outer Circle -->
+  <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="15"/>
 
+  <!-- Animated Exclamation Mark -->
   <g class="mark">
     <path
-      d="M12.29 8.143v4.55"
+      d="M100 61.4v45.5"
       stroke="currentColor"
-      stroke-width="1.5"
+      stroke-width="15"
       stroke-linecap="round"
     />
-    <circle cx="12.29" cy="14.957" r=".9" fill="currentColor"/>
+    <circle cx="100" cy="129.6" r="9" fill="currentColor"/>
   </g>
 </svg>
