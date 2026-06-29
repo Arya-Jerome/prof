@@ -355,6 +355,14 @@
     display: none;
 }
 
+/* ── Animated hide-out for file-list and footer after successful send ── */
+.upload-file-list--hiding,
+.upload-hero__footer--hiding {
+    animation: upload-hero-content-exit 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
+    overflow: hidden;
+}
+
 .upload-send-btn {
     display: inline-flex;
     align-items: center;

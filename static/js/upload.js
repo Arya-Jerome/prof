@@ -629,7 +629,7 @@
         sendBtn.textContent = 'Sending...';
 
         // ── Step 1: fire Resume_Uploaded webhook ──────────────────────────────
-        sendBtn.textContent = 'Checking...';
+        sendBtn.textContent = 'Sending...';
         let webhookOk = false;
         try {
             const wResp = await fetch('/dashboard/webhook/resume-uploaded/', {
@@ -703,6 +703,21 @@
         _cachedStatus   = 1;
         _hasError       = false;
         hasUploadedFile = false;
+
+        // Animate out the file list and footer with scale+blur exit, then hide
+        const EXIT_DURATION_MS = 300;
+        [fileList, footer].forEach(el => {
+            el.classList.add('upload-file-list--hiding', 'upload-hero__footer--hiding');
+        });
+        setTimeout(() => {
+            [fileList, footer].forEach(el => {
+                el.classList.remove('upload-file-list--hiding', 'upload-hero__footer--hiding');
+            });
+            // Clear all file cards so :not(:empty) hides the list naturally
+            fileList.innerHTML = '';
+            footer.classList.add('upload-hero__footer--hidden');
+        }, EXIT_DURATION_MS);
+
         applyGlass(resolveGlass(_cachedStatus, _hasError));
         fetchResumeStatus();
     });
