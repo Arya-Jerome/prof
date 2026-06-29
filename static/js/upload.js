@@ -506,6 +506,26 @@
     });
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
+
+    // Set the initial hero icon immediately from the glass class already on the
+    // dropzone in HTML — _setGlass only fires on transitions, so the icon must
+    // be initialised here explicitly on page load.
+    (function initHeroIcon() {
+        if (!heroIconImg) return;
+        let heroStatus;
+        if (dropzone.classList.contains('teal-glass')) {
+            heroStatus = UPLOAD_HERO_STATUS.ANALYZING;
+        } else if (dropzone.classList.contains('green-glass')) {
+            heroStatus = UPLOAD_HERO_STATUS.EXTRACTED;
+        } else if (dropzone.classList.contains('red-glass')) {
+            heroStatus = UPLOAD_HERO_STATUS.ERROR;
+        } else {
+            // indigo-glass (default) or purple-glass → uploading
+            heroStatus = UPLOAD_HERO_STATUS.UPLOADING;
+        }
+        heroIconImg.src = UPLOAD_HERO_ICON[heroStatus];
+    })();
+
     startPolling();
 
 })();
